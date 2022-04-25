@@ -48,7 +48,7 @@ function returnName() {
 
 <template>
   <div class="d-flex flex-column align-items-center w-100">
-    <div class="bg-info div_size" id="profile-cover"></div>
+    <div class="bg-secondary div_size" id="profile-cover"></div>
     <div class="d-flex bg-light div_size" :style="profileStyle">
       <div
         class="d-flex align-items-center justify-content-center w-25 p-2 mx-0"

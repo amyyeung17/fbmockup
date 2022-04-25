@@ -123,9 +123,13 @@ function updateContentText(pid) {
 
 function getReplyLabel(user) {
   if (currentStore.windowWidth < 900) {
-    return user.split(' ')[0]
+    return user.split(" ")[0];
   }
-  return user
+  if (user.length > 12) {
+    let u = user.split(" ");
+    return u[0] + " " + u[1][0];
+  }
+  return user;
 }
 </script>
 
@@ -251,10 +255,7 @@ function getReplyLabel(user) {
               :data-bs-target="'#collapseinput' + p.pid"
               :aria-controls="'collapseinput' + p.pid"
             >
-              <OptionsLabel
-                :icon-class="replyClass"
-              >
-              </OptionsLabel>
+              <OptionsLabel :icon-class="replyClass"> </OptionsLabel>
             </button>
           </template>
         </CustomInput>

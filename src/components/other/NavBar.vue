@@ -62,7 +62,7 @@ function resize() {
       class="d-flex align-items-center justify-content-between w-100"
       id="nav-container"
     >
-      <a class="navbar-brand active m-2" @click="router.push('/')">
+      <a class="navbar-brand active m-2" @click="router.push('/home')">
         Fakebook
       </a>
       <div class="m-2" id="nav-logo">
@@ -76,12 +76,12 @@ function resize() {
         </CustomInput>
       </div>
       <div class="d-flex justify-content-center" id="nav-input">
-        <h5 class="m-2">Hello {{ currentStore.currentUser }} !</h5>
+        <h5 class="m-0">Hello {{ currentStore.currentUser }} !</h5>
       </div>
       <div v-if="992 <= screenSize">
         <ul class="nav">
           <li class="nav-item m-2">
-            <a class="nav-link active" @click="router.push('/')">
+            <a class="nav-link active" @click="router.push('/home')">
               <i class="bi bi-house-door-fill"></i>
             </a>
           </li>
@@ -125,7 +125,9 @@ function resize() {
           class="dropdown-menu dropdown-menu-end"
           aria-labelledby="sm-nav-dropdown"
         >
-          <button class="dropdown-item" @click="router.push('/')">Home</button>
+          <button class="dropdown-item" @click="router.push('/home')">
+            Home
+          </button>
           <div class="dropdown dropstart">
             <button
               class="dropdown-item"

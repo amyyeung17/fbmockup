@@ -16,16 +16,16 @@ export default defineConfig({
     postcss: {
       plugins: [
         {
-          postcssPlugin: 'internal:charset-removal',
+          postcssPlugin: "internal:charset-removal",
           AtRule: {
             charset: (atRule) => {
-              if (atRule.name === 'charset') {
+              if (atRule.name === "charset") {
                 atRule.remove();
               }
-            }
-          }
-        }
-      ]
-    }
+            },
+          },
+        },
+      ],
+    },
   },
 });

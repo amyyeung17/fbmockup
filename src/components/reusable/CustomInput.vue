@@ -42,7 +42,6 @@ defineProps({
   },
 });
 const emit = defineEmits(["update:modelValue", "send-event"]);
-
 </script>
 
 <template>

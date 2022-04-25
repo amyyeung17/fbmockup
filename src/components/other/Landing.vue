@@ -16,7 +16,7 @@ function enter() {
   if (!currentStore.guest) {
     currentStore.setGuestUser();
   }
-  router.push("/");
+  router.push("/home");
 }
 </script>
 

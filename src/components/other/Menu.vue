@@ -38,7 +38,7 @@ function setMessage() {
       :to="
         currentStore.currentId !== -1
           ? { name: 'profile', params: { id: currentStore.currentId } }
-          : '/'
+          : '/home'
       "
       class="nav-link"
     >
@@ -48,7 +48,7 @@ function setMessage() {
       :to="
         currentStore.currentId !== -1
           ? { name: 'message', params: { id: currentStore.currentId } }
-          : '/'
+          : '/home'
       "
       class="nav-link"
       @click="setMessage"

@@ -28,8 +28,8 @@ const contentContainer = ref({ width: "40%" });
         <li>CSS (Bootstrap)</li>
       </ul>
       <div class="d-flex align-items-center justify-content-between w-75 my-4">
-        <a class="nav-link w-25 fs-5 p-2"> Github </a>
-        <a class="nav-link w-25 fs-5" @click="router.back()"> Back </a>
+        <a class="nav-link w-50 fs-5 p-2"> Github </a>
+        <a class="nav-link w-50 fs-5" @click="router.back()"> Back </a>
       </div>
     </div>
   </div>
