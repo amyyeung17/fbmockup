@@ -1,5 +1,5 @@
 <script setup>
-import { defineEmits, nextTick, ref } from "vue";
+import { nextTick, ref } from "vue";
 import { useRoute } from "vue-router";
 import { useCurrentStore } from "@/stores/currentstate";
 import { useUserStore } from "@/stores/user";

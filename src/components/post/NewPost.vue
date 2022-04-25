@@ -1,5 +1,5 @@
 <script setup>
-import { defineEmits, defineProps, ref } from "vue";
+import { ref } from "vue";
 import CustomInput from "@/components/reusable/CustomInput.vue";
 
 defineProps({

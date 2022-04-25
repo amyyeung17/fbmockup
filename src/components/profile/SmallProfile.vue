@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, defineEmits, nextTick, ref } from "vue";
+import { nextTick, ref } from "vue";
 
 defineProps({
   user: Object,

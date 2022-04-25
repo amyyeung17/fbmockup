@@ -1,5 +1,4 @@
 <script setup>
-import { defineProps } from "vue";
 import OptionsLabel from "./OptionsLabel.vue";
 
 defineProps({

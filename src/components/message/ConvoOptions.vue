@@ -1,5 +1,4 @@
 <script setup>
-import { defineEmits, defineProps } from "vue";
 import ConvoButtons from "./ConvoButtons.vue";
 
 defineProps({
