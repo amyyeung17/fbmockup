@@ -120,6 +120,13 @@ function updateContentText(pid) {
     editPost.value = postStore.getPost(pid).content;
   }
 }
+
+function getReplyLabel(user) {
+  if (currentStore.windowWidth < 900) {
+    return user.split(' ')[0]
+  }
+  return user
+}
 </script>
 
 <template>
@@ -233,22 +240,20 @@ function updateContentText(pid) {
         >
           <template #replyLabel>
             <label :for="'reply' + p.pid" id="reply-label">
-              {{ currentStore.currentUser + ":" }}
+              {{ getReplyLabel(currentStore.currentUser) + ":" }}
             </label>
           </template>
           <template #replyButton>
             <button
-              class="btn btn-primary m-1 px-2"
+              class="btn btn-primary mx-3 my-1 px-2"
               @click="enterReply(p.pid)"
               data-bs-toggle="collapse"
               :data-bs-target="'#collapseinput' + p.pid"
               :aria-controls="'collapseinput' + p.pid"
             >
               <OptionsLabel
-                :condition="!currentStore.getWindow"
                 :icon-class="replyClass"
               >
-                reply
               </OptionsLabel>
             </button>
           </template>
@@ -288,6 +293,7 @@ function updateContentText(pid) {
 @media only screen and (max-width: 991px) {
   #reply-label {
     font-size: 0.9rem;
+    min-width: 5rem;
   }
 }
 </style>

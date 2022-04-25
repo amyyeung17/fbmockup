@@ -6,7 +6,7 @@ defineProps({
   formClass: {
     type: [String, Array],
     default: () => {
-      ["input-group", "w-75", "m-2"];
+      return ["input-group", "w-75", "m-2"];
     },
   },
   inputType: {
@@ -20,7 +20,7 @@ defineProps({
   inputClass: {
     type: [String, Array],
     default: () => {
-      ["form-control", "w-75"];
+      return ["form-control", "w-75"];
     },
   },
   placeholderText: {
@@ -42,6 +42,7 @@ defineProps({
   },
 });
 const emit = defineEmits(["update:modelValue", "send-event"]);
+
 </script>
 
 <template>
