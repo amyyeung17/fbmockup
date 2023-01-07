@@ -102,5 +102,5 @@ const handleNew = (id) => {
 <style>
 #iconpic {
   font-size: 5rem
-
+}
 </style>
