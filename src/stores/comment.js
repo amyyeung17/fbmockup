@@ -73,48 +73,32 @@ export const useCommentStore = defineStore({
     ],
   }),
   getters: {
-    getMain: (state) => {
-      return (pid) => {
-        for (const c of state.comment) {
-          if (c.pid === pid) {
-            return c;
-          }
-        }
-      };
-    },
     getComments: (state) => {
       return (pid) => {
-        return state.getMain(pid).comments;
+        return state.comment.find(ele => ele.pid === pid)
       };
-    },
-    getDisplay: (state) => {
-      return (pid, zero) => {
-        return zero ? zero : state.getMain(pid).display;
-      };
-    },
-    getInputDisplay: (state) => {
-      return (pid) => {
-        return state.getMain(pid).reply;
-      };
-    },
+    }
   },
   actions: {
     setDisplay(pid) {
-      const c = this.getMain(pid);
-      c.display = !c.display;
+      const c = this.getComments(pid)
+      c.display = !c.display
     },
-    setInputDisplay(pid) {
-      const c = this.getMain(pid);
-      c.reply = !c.reply;
+    setReply(pid) {
+      const c = this.getComments(pid)
+      c.reply = !c.reply
     },
     enterReply(pid, r) {
-      const c = this.getMain(pid);
+      const c = this.getComments(pid);
       const current = useCurrentStore();
       c.comments.push({ id: current.currentId, c: r });
-      c.reply = !c.reply;
+      c.reply = !c.reply
+      if (c.comments.length > 3) {
+        c.display = true
+      }
     },
-    addComment(c) {
-      this.comment.push(c);
+    update(length) {
+      this.comment.push({pid: length, display: false, reply: false, comments: []});
     },
   },
 });

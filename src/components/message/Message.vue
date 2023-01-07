@@ -1,94 +1,106 @@
 <script setup>
-import { watch } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { computed, ref, watch } from "vue";
+import { RouterLink, useRoute, useRouter } from "vue-router";
 import { useCurrentStore } from "@/stores/currentstate";
 import { useUserStore } from "@/stores/user";
 import { useMessageStore } from "@/stores/message";
-import MessageList from "./MessageList.vue";
-import Convo from "./Convo.vue";
-import ConvoOptions from "./ConvoOptions.vue";
+import MessageList from "./msglist/MessageList.vue";
+import MainStructure from "@/components/reusable/MainStructure.vue";
+import Convo from "./convo/Convo.vue";
+import IconButton from '../reusable/IconButton.vue'
 
 const userStore = useUserStore();
 const currentStore = useCurrentStore();
 const messageStore = useMessageStore();
 const route = useRoute();
-const router = useRouter();
+const router = useRouter()
+const usernames = userStore.getAllUsernames()
+const currentConvo = ref([])
+
+const updateMessage = () => {
+  currentConvo.value = messageStore.getAllMsgs(route.params.id);
+  if (currentConvo.value.length !== 0 || currentStore.currentMsg === -1) {
+    currentStore.setMsg(currentConvo.value[0].mid);
+  } else {
+    currentStore.setMsg(route.params.id);
+  }
+}
 
 watch(
   route,
   () => {
-    if (currentStore.currentId !== -1) {
-      if (messageStore.getMessage(currentStore.currentId, "all").length !== 0) {
-        messageStore.cleanEmptyConvo();
+    if (currentStore.currentId !== -1 && route.path.includes('message')) {
+      if (messageStore.getAllMsgs(route.params.id).length !== 0) {
+        messageStore.removeEmpty(currentStore.currentId);
       }
-      if (route.path.includes("message")) {
+      if (route.path.includes('message')) {
         updateMessage();
       }
+    } else {
+      router.push('/home')
     }
   },
   { immediate: true }
 );
 
-function updateMessage() {
-  let convo = messageStore.getMessage(parseInt(route.params.id), "all");
-  if (convo.length !== 0 || currentStore.selectedMessage === -1) {
-    currentStore.setSelectedMessage(parseInt(convo[0].mid));
+
+const handleNew = (id) => {
+  const mes = messageStore.getAllCurrent
+  if ([...mes.map(m => m.mid)].indexOf(id) !== -1) {
+    currentStore.setMsg(id)
   } else {
-    currentStore.setSelectedMessage(parseInt(route.params.id));
+    messageStore.update(id);
   }
 }
 
-function goProfile() {
-  router.push({
-    name: "profile",
-    params: { id: currentStore.selectedMessage },
-  });
-}
 </script>
 
 <template>
-  <div class="d-flex justify-content-center w-100" id="msg">
-    <div class="d-flex flex-row" id="msg">
-      <div class="d-flex flex-column align-items-center" id="msg-left">
-        <MessageList />
-      </div>
-      <div class="d-flex flex-column align-items-center" id="msg-mid">
-        <Convo @go-profile="goProfile" />
-      </div>
-      <div
-        v-if="currentStore.getWindow"
-        class="d-flex flex-column align-items-center"
-        id="msg-right"
-      >
-        <ConvoOptions
-          :current-name="userStore.getUsername(currentStore.selectedMessage)"
-          @go-profile="goProfile"
-        />
-      </div>
-    </div>
-  </div>
+  <MainStructure :page="'msg'"> 
+    <template #left> 
+      <MessageList
+        :preview-list="messageStore.getAllMsgs(route.params.id)"
+        :user="userStore.getCurrentUser()"
+        :usernames="usernames"
+        @handle-new="handleNew"
+        @select-friend="currentStore.setMsg"
+      />
+    </template>
+    <template #middle> 
+      <Convo
+        :convo-items="messageStore.getCurrentMsg(route.params.id)" 
+        :current-msg="currentStore.currentMsg"
+        :usernames="usernames"
+        :window-size="currentStore.getWindow"
+        @send-msg="messageStore.enterMsg"
+      />
+    </template>
+    <template #right>
+      <template v-if="currentStore.getWindow"> 
+        <h4 class="m-2"> {{ usernames[currentStore.currentMsg] }} </h4>
+        <i class="bi bi-person-circle profile-pic" id="iconpic"></i>
+        <RouterLink
+          class="list-group-item list-group-item-action p-2"
+          :to="{name: 'profile', params: { id: currentStore.currentMsg }}"
+        >
+          Profile
+        </RouterLink>
+        <button
+          class="list-group-item list-group-item-action disabled p-2"
+          disabled
+          aria-disabled="true"
+          v-for="[index, text] of ['Photos', 'Options', 'Settings'].entries()"
+          :key="index"
+        >
+          {{ text }}
+        </button>
+      </template>
+    </template>
+  </MainStructure>
 </template>
 
 <style>
-#msg {
-  width: clamp(80%, 80%, 85%);
-}
-#msg-left {
-  width: 35%;
-}
-#msg-mid {
-  width: 65%;
-}
+#iconpic {
+  font-size: 5rem
 
-@media only screen and (min-width: 992px) {
-  #msg-left {
-    width: 30%;
-  }
-  #msg-mid {
-    width: clamp(45%, 45%, 50%);
-  }
-  #msg-right {
-    width: 20%;
-  }
-}
 </style>

@@ -1,102 +1,57 @@
 <script setup>
-import { ref } from "vue";
-import { RouterLink, useRouter } from "vue-router";
 import { useCurrentStore } from "@/stores/currentstate";
 import { useMessageStore } from "@/stores/message";
-import OptionsLabel from "@/components/reusable/OptionsLabel.vue";
-import LinkLabel from "@/components/reusable/LinkLabel.vue";
+import IconLink from '@/components/reusable/IconLink.vue'
 
-const router = useRouter();
 const currentStore = useCurrentStore();
 const messageStore = useMessageStore();
 
-const profileClass = ref(["bi-person-fill", "icon"]);
-const messageClass = ref(["bi-send-fill", "icon"]);
-const controllerClass = ref(["bi-controller", "icon"]);
-const mapClass = ref(["bi-map-fill", "icon"]);
-const gearClass = ref(["bi-gear-fill", "icon"]);
-const infoClass = ref(["bi-info", "icon"]);
+const allLinks = {'Profile': 'person-fill', 'Message': 'send-fill', 'Info': 'info', 'Games': 'controller', 'Map': 'map-fill', 'Settings': 'gear-fill'}
 
-function setMessage() {
-  const m = messageStore.getMessage(currentStore.currentId, "all");
+//send to home
+const setMessage = () => {
+  const m = messageStore.getAllCurrent 
 
   if (currentStore.currentId !== -1) {
     if (m.length === 0) {
-      currentStore.setSelectedMessage(currentStore.currentId);
+      currentStore.setMsg(currentStore.currentId);
       return;
     }
     if (m[0].msg.length !== 0) {
-      currentStore.setSelectedMessage(parseInt(m[0].mid));
+      currentStore.setMsg(m[0].mid);
     }
   }
 }
+
+const getLink = (type) => {
+  if (type === 'Profile' || type === 'Message') {
+    return (currentStore.currentId !== -1 ? { name: type.toLowerCase(), params: { id: currentStore.currentId }} : '/home')
+  } else if (type === 'Info') {
+    return '/info'
+  } else {
+    return ''
+  }
+}
+
 </script>
 
 <template>
-  <nav class="border-end h-25 m-1 py-5" id="menu-container">
-    <RouterLink
-      :to="
-        currentStore.currentId !== -1
-          ? { name: 'profile', params: { id: currentStore.currentId } }
-          : '/home'
-      "
-      class="nav-link"
+  <nav class="border-end h-25 m-1 p-3" id="menu-container">
+    <IconLink 
+      v-for="[text, iconType] of Object.entries(allLinks)" 
+      :key="text"
+      :icon-class="iconType"
+      :to-location="getLink(text)"
+      @handle-click="text === 'Message' ? setMessage() : () => void 0"
     >
-      <OptionsLabel :icon-class="profileClass" space> Profile </OptionsLabel>
-    </RouterLink>
-    <RouterLink
-      :to="
-        currentStore.currentId !== -1
-          ? { name: 'message', params: { id: currentStore.currentId } }
-          : '/home'
-      "
-      class="nav-link"
-      @click="setMessage"
-    >
-      <OptionsLabel :icon-class="messageClass" space> Message </OptionsLabel>
-    </RouterLink>
-    <a class="nav-link" @click="router.push('/info')">
-      <OptionsLabel :icon-class="infoClass" space> Info </OptionsLabel>
-    </a>
-    <LinkLabel
-      :icon-option="controllerClass"
-      :condition-option="true"
-      :slot-info="'Games'"
-    />
-    <LinkLabel
-      :icon-option="mapClass"
-      :condition-option="true"
-      :slot-info="'Map'"
-    />
-    <LinkLabel
-      :icon-option="gearClass"
-      :condition-option="true"
-      :slot-info="'Settings'"
-    />
+      {{currentStore.getWindow ? text : ''}}
+    </IconLink>
   </nav>
 </template>
 
 <style scoped>
 #menu-container {
-  max-width: 18rem;
   max-height: 35rem;
 }
-@media only screen and (min-width: 768px) {
-  #menu-container {
-    padding-left: 36px;
-    padding-right: 36px;
-  }
-}
-@media only screen and (min-width: 992px) {
-  #menu-container {
-    padding: 36px;
-    width: 100%;
-  }
-}
-@media only screen and (min-width: 1200px) {
-  #menu-container {
-    padding: 48px;
-    width: 100%;
-  }
-}
+
 </style>

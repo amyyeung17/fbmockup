@@ -1,29 +1,29 @@
 <script setup>
-defineProps({
+const props = defineProps({
   condition: Boolean,
 });
+
+const emit = defineEmits(['handle-error'])
+
 </script>
 
 <template>
-  <div v-if="condition" class="d-flex flex-column align-items-center w-100">
+  <template v-if="condition">
     <div
-      class="alert alert-info alert-dismissible fade show m-2"
-      id="alert-size"
+      class="alert alert-info alert-dismissible  w-100 fade show m-2"
       role="alert"
     >
-      <slot></slot>
+      <span> <slot name="errorMsg"></slot> </span>
       <button
         type="button"
         class="btn-close"
         data-bs-dismiss="alert"
         aria-label="Close"
-      ></button>
+        @click="emit('handle-error')"
+      > 
+        <slot name="errorBtn"></slot>
+      </button>
     </div>
-  </div>
+  </template>
 </template>
 
-<style>
-#alert-size {
-  width: clamp(75%, 80%, 100%);
-}
-</style>

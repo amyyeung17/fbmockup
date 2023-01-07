@@ -2,20 +2,10 @@
 import { useCurrentStore } from "@/stores/currentstate";
 const currentStore = useCurrentStore();
 
-defineProps({
+const props = defineProps({
   formClass: {
     type: [String, Array],
-    default: () => {
-      return ["input-group", "w-75", "m-2"];
-    },
-  },
-  inputType: {
-    type: String,
-    default: "text",
-  },
-  inputStyle: {
-    type: [String, Object],
-    default: "",
+    default: 'input-group w-100 m-2 px-2',
   },
   inputClass: {
     type: [String, Array],
@@ -32,47 +22,46 @@ defineProps({
     type: Boolean,
     default: false,
   },
-  landing: {
-    type: Boolean,
-    default: false,
-  },
   labelText: {
     type: String,
-    required: true,
+    required: '',
   },
 });
+console.log(props.error)
 const emit = defineEmits(["update:modelValue", "send-event"]);
 </script>
 
 <template>
-  <div class="d-flex flex-column align-items-center w-100">
-    <slot name="alert"> </slot>
+  <div class="d-flex flex-column align-items-center" :class="!labelText.includes('navbar') ? 'w-100' : 'custom-input-div'">
     <div :class="formClass">
-      <slot name="replyLabel"></slot>
+      <slot name="inputLabel"></slot>
       <input
-        :type="inputType"
+        type="input"
+        class="form-control"
         :class="inputClass"
-        :style="inputStyle"
         :placeholder="placeholderText"
         :id="labelText"
         :value="modelValue"
-        @input="emit('update:modelValue', $event.target.value)"
-        :disabled="error || currentStore.guest"
+        @input="$emit('update:modelValue', $event.target.value)"
+        :disabled="error || (currentStore.currentId === -1)"
       />
-      <slot name="replyButton"> </slot>
-      <div v-if="!landing && !labelText.includes('reply')">
+      <slot name="inputButton"> 
         <button
+          v-if="!labelText.includes('floating')"
           class="input-group-text"
           @click="emit('send-event', modelValue)"
           :disabled="error"
         >
           <slot></slot>
         </button>
-        <slot name="additionalOptions"></slot>
-      </div>
-      <label v-if="landing && !labelText.includes('reply')" :for="labelText">
-        <slot></slot>
-      </label>
+      </slot>
+      <slot name="floatLabel"></slot>
     </div>
   </div>
 </template>
+
+<style scoped>
+.custom-input-div {
+  width: 42.5%;
+}
+</style>

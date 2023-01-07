@@ -9,7 +9,9 @@ const route = useRoute();
   <div v-if="!route.path.includes('welcome') && !route.path.includes('info')">
     <NavBar />
   </div>
-  <RouterView></RouterView>
+  <div class="container-md d-flex justify-content-center w-100">
+      <RouterView></RouterView>
+  </div>
 </template>
 <style>
 @import "@/assets/base.css";
@@ -36,5 +38,9 @@ nav a {
 
 nav a:first-of-type {
   border: 0;
+}
+
+.row {
+  max-width: 65rem;
 }
 </style>

@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-
+import { useCurrentStore } from "@/stores/currentstate";
 export const useUserStore = defineStore({
   id: "user",
   state: () => ({
@@ -79,37 +79,33 @@ export const useUserStore = defineStore({
   getters: {
     getUser: (state) => {
       return (id) => {
-        for (const u of state.user) {
-          if (u.id === parseInt(id)) {
-            return u;
-          }
-        }
-        return -1;
+        const user = state.user.find(u => u.id === parseInt(id))
+        return (typeof(user) !== 'undefined' ? user : -1)
       };
     },
-    getUsername: (state) => {
-      return (id) => {
-        const u = state.getUser(id);
-        if (u === -1) {
-          return " Guest User";
-        }
-        return u.name;
-      };
+    getCurrentUser: (state) => {
+      return () => {
+        const currentStore = useCurrentStore()
+        return state.getUser(currentStore.currentId)
+      }
     },
     getFriends: (state) => {
       return (id) => {
-        const u = state.getUser(id);
-        let friend = state.user.filter((v) => {
-          return u.friends.indexOf(v.id) !== -1;
-        });
-        return friend;
+        const user = state.getUser(id);
+        return state.user.filter((u) => user.friends.indexOf(u.id) !== -1);
       };
+    },
+    getAllUsernames: (state) => {
+      return () => {
+        const usernames = state.user.reduce((acc, current) => ({...acc, [current.id]: current.name }), {})
+        usernames['-1'] = 'Guest User'
+        return usernames
+      }
     },
   },
   actions: {
     editFriends(id, currentId) {
-      const parseId = parseInt(id);
-      const user = this.getUser(parseId);
+      const user = this.getUser(id);
       if (user.friends.indexOf(currentId) !== -1) {
         user.friends.splice(user.friends.indexOf(currentId), 1);
       } else {
