@@ -5,11 +5,11 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: "/",
-      redirect: "/welcome",
+      path: "/project3",
+      redirect: "/project3/welcome",
     },
     {
-      path: "/home",
+      path: "/project3/home",
       name: "home",
       component: HomeView,
     },
@@ -28,7 +28,7 @@ const router = createRouter({
       component: () => import("../views/MessageView.vue"),
     },
     {
-      path: "/welcome",
+      path: "/project3/welcome",
       name: "welcome",
       component: () => import("../views/LandingView.vue"),
     },
