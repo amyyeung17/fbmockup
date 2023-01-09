@@ -30,7 +30,7 @@ const router = createRouter({
     {
       path: "/welcome",
       name: "welcome",
-      component: () => import("../views/LandingView.vue"),
+      component: LandingView,
     },
     {
       path: "/info",
