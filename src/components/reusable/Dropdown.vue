@@ -31,6 +31,7 @@ const props = defineProps({
 //button -> in template 
 const emit = defineEmits(['handle-click', 'handle-menu'])
 console.log(props.menuOptions)
+console.log(import.meta.url)
 
 </script>
 
