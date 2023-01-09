@@ -38,7 +38,7 @@ import IconLink from '@/components/reusable/IconLink.vue'
     <RouterLink
       type="button"
       class="btn btn-primary w-25 m-3 px-3 py-2"
-      :to="'/project3/home'"
+      :to="'/home'"
     >
       Enter
     </RouterLink>
