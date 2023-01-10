@@ -6,7 +6,7 @@ import IconLink from '@/components/reusable/IconLink.vue'
 const currentStore = useCurrentStore();
 const messageStore = useMessageStore();
 
-const allLinks = {'Profile': 'person-fill', 'Message': 'send-fill', 'Info': 'info', 'Games': 'controller', 'Map': 'map-fill', 'Settings': 'gear-fill'}
+const allLinks = {'Profile': 'person-fill', 'Message': 'send-fill', 'Info': 'info', 'Games': 'controller disabled', 'Map': 'map-fill disabled', 'Settings': 'gear-fill disabled'};
 
 //send to home
 const setMessage = () => {
@@ -53,5 +53,4 @@ const getLink = (type) => {
 #menu-container {
   max-height: 35rem;
 }
-
 </style>

@@ -6,7 +6,7 @@ import CustomInput from "../../reusable/CustomInput.vue";
 const currentMessage = ref('');
 const convoContainer = ref(null);
 
-const props = defineProps({
+ defineProps({
   convoItems: Object,
   usernames: Object
 })
@@ -20,6 +20,7 @@ const enterMsg = (content) => {
     convoContainer.value.scrollTop = convoContainer.value.scrollHeight;
   });
 }
+
 </script>
 
 <template>  
@@ -34,10 +35,10 @@ const enterMsg = (content) => {
       :key="index + 'user' + a.user"
     >
       <RouterLink 
-        class="link-primary text-decoration-none active w-50 my-3 p-2"
+        class="link-primary text-decoration-none w-50 my-3 p-2"
         :to="{name: 'profile', params: { id: a.user }}"
       >
-       {{ usernames[a.user] }}
+       {{ usernames[a.user] }} 
       </RouterLink>
       <p class="px-2 my-2">{{ a.m }}</p>
     </li>

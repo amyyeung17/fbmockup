@@ -22,27 +22,25 @@ onMounted(() => {
 </script>
 
 <template>
-   <div class="row">
-    <div class="col">
-      <div class="bg-secondary w-100" id="profile-cover"> </div>
-      <Banner
-        :current-user="parseInt(route.params.id) !== currentStore.currentId && currentStore.currentId !== -1"
-        :current-username = "usernames[route.params.id]"
-        :friend-stat="userStore.getUser(route.params.id).friends.indexOf(currentStore.currentId) !== -1"
-        @edit-friends="userStore.editFriends(route.params.id, currentStore.currentId)"
-      />
-      <LargeProfile
-        v-if="currentStore.getWindow"
-        :user="userStore.getUser(route.params.id)"
-        :usernames="usernames"
-      />
-      <SmallProfile
-        v-else
-        :user="userStore.getUser(route.params.id)"
-        :usernames="usernames"
-      />
+  <div class="col">
+    <div class="bg-secondary w-100" id="profile-cover"> </div>
+    <Banner
+      :current-user="parseInt(route.params.id) !== currentStore.currentId && currentStore.currentId !== -1"
+      :current-username = "usernames[route.params.id]"
+      :friend-stat="userStore.getUser(route.params.id).friends.indexOf(currentStore.currentId) !== -1"
+      @edit-friends="userStore.editFriends(route.params.id, currentStore.currentId)"
+    />
+    <LargeProfile
+      v-if="currentStore.getWindow"
+      :user="userStore.getUser(route.params.id)"
+      :usernames="usernames"
+    />
+    <SmallProfile
+      v-else
+      :user="userStore.getUser(route.params.id)"
+      :usernames="usernames"
+    />
   </div>
-</div>
 </template>
 
 <style>

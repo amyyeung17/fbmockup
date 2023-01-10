@@ -21,9 +21,15 @@ const router = useRouter();
       <li>Pinia</li>
       <li>CSS (Bootstrap)</li>
     </ul>
-    <div class="d-flex align-items-center justify-content-between w-75 my-4">
-      <a class="nav-link w-50 fs-5 p-2" target="_blank"> Github </a>
-      <a class="nav-link w-50 fs-5" @click="router.back()"> Back </a>
+    <div class="d-flex align-items-center justify-content-evenly w-50 my-4">
+      <a class="link-primary link-button fs-5 p-2" href="https://github.com/amyyeung17/fbmockup" target="_blank"> Code </a>
+      <a class="link-primary link-button fs-5 p-2" href="https://www.ayeung.me"> Portfolio </a>
     </div>
   </div>
 </template>
+
+<style scoped>
+.link-button {
+  min-width: 7.5rem;
+}
+</style>

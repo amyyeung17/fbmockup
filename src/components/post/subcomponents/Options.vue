@@ -42,7 +42,7 @@ const emit = defineEmits([
       <p class="me-2 card-subtitle text-muted fs-6">  {{ (postComments.comments.length > 0 ? `Showing ${postComments.display ? '' : `${postComments.comments.length > 3 ? '3' : postComments.comments.length} of `}${postComments.comments.length} comments` : '') }} </p>
       <IconButton
         :disabled-stat="postComments.comments.length <= 3" 
-        :icon-class="`arrow-${postComments.display ? 'up' : 'down'} fs-6`"
+        :icon-class="`chevron-${postComments.display ? 'up' : 'down'} fs-6`"
         :button-color="'btn-outline-secondary'"
         @handle-click="emit('set-display', post.pid)"
       />

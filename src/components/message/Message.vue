@@ -17,6 +17,11 @@ const router = useRouter()
 const usernames = userStore.getAllUsernames()
 const currentConvo = ref([])
 
+/**
+ * Updates currently displaed message's recipient (currentStore.currentMsg) when navigating
+ * If user has no messages, the value is set to the current user 
+ * */
+
 const updateMessage = () => {
   currentConvo.value = messageStore.getAllMsgs(route.params.id);
   if (currentConvo.value.length !== 0 || currentStore.currentMsg === -1) {
@@ -26,6 +31,10 @@ const updateMessage = () => {
   }
 }
 
+/**
+ * When route changes, remove unsent messages.
+ * If navigating within /message (update by switching current user), call updateMessage
+*/
 watch(
   route,
   () => {
@@ -36,14 +45,18 @@ watch(
       if (route.path.includes('message')) {
         updateMessage();
       }
-    } else {
-      router.push('/home')
-    }
+    } 
   },
   { immediate: true }
 );
 
-
+/**
+ * Callback function for starting new conversation.
+ * If user selects a friend who they have convo history, set the recipient id.
+ * Otherwise, add a new conversation. 
+ * 
+ * TODO - currentStore.setMsg() -> called after if (statement === 1), remove from message.js (?)
+ */
 const handleNew = (id) => {
   const mes = messageStore.getAllCurrent
   if ([...mes.map(m => m.mid)].indexOf(id) !== -1) {

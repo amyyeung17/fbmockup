@@ -2,7 +2,7 @@
 import { useCurrentStore } from "@/stores/currentstate";
 const currentStore = useCurrentStore();
 
-const props = defineProps({
+defineProps({
   formClass: {
     type: [String, Array],
     default: 'input-group w-100 m-2 px-2',
@@ -27,7 +27,7 @@ const props = defineProps({
     required: '',
   },
 });
-console.log(props.error)
+
 const emit = defineEmits(["update:modelValue", "send-event"]);
 </script>
 
@@ -62,6 +62,12 @@ const emit = defineEmits(["update:modelValue", "send-event"]);
 
 <style scoped>
 .custom-input-div {
-  width: 42.5%;
+  width: 44%;
+}
+
+@media only screen and (min-width: 992px) {
+  .custom-input-div {
+    width: 33.5%;
+  }
 }
 </style>

@@ -22,7 +22,7 @@ const emit = defineEmits(['edit-friends'])
     <i class="bi bi-person-circle profile-pic w-25"></i>
     <h2 class="align-self-end display-5 py-1"> {{ currentUsername }} </h2>
     <div
-      class="d-flex pb-3 w-25 justify-content-end" 
+      class="d-flex flex-grow-1 p-3 justify-content-end" 
       v-if="currentUser"
     >
       <IconButton
@@ -39,7 +39,7 @@ const emit = defineEmits(['edit-friends'])
         v-else
         :dropdown-style="'align-self-end'"
         :id-label="'dropfriend'"
-        :menu-options="['Unfriends'].entries()"
+        :menu-options="['Unfriend'].entries()"
         :menu-style="'dropdown-menu-end'"
         @handle-menu="emit('edit-friends')"
       > 

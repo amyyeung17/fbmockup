@@ -6,10 +6,8 @@ const route = useRoute();
 </script>
 
 <template>
-  <div v-if="!route.path.includes('welcome') && !route.path.includes('info')">
-    <NavBar />
-  </div>
-  <div class="container-md d-flex justify-content-center w-100">
+  <NavBar v-if="!route.path.includes('welcome') && !route.path.includes('info')" />
+  <div class="container-md d-flex justify-content-center">
       <RouterView></RouterView>
   </div>
 </template>
@@ -43,4 +41,18 @@ nav a:first-of-type {
 .row {
   max-width: 65rem;
 }
+
+@media only screen and (max-width: 771px) {
+  #portfolio-button {
+    left: 90%;
+    top: 92.5%;
+  }
+};
+
+@media only screen and (min-width: 772px) {
+  #portfolio-button {
+    left: 7.5%;
+    top: 92.5%;
+  }
+};
 </style>

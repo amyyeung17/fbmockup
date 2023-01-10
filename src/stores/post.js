@@ -174,7 +174,6 @@ export const usePostStore = defineStore({
       const currentStore = useCurrentStore();
       const commentStore = useCommentStore();
       if (newPost !== '' && currentStore.currentId !== -1) {
-        console.log(`13:${this.post.length + 1}`)
         this.post.push({
           pid: this.post.length,
           id: currentStore.currentId,

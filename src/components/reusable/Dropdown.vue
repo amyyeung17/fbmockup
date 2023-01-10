@@ -30,7 +30,6 @@ const props = defineProps({
 
 //button -> in template 
 const emit = defineEmits(['handle-click', 'handle-menu'])
-
 </script>
 
 <template>

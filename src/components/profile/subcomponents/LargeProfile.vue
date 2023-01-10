@@ -12,7 +12,7 @@ defineProps({
 <template>
   <MainStructure :page="'profile'">
     <template #left>
-      <div class="d-flex flex-column" id="lg-profile-container">
+      <div class="d-flex flex-column w-100" id="lg-profile-container">
         <div class="border rounded w-100 m-3" id="lg-info-div">
           <p class="m-2"><i class="bi bi-pin-fill m-1"></i> {{ user.desc }}</p>
           <p class="m-2"><i class="bi bi-pin-map-fill m-1"></i> {{ user.location }}</p>
@@ -25,7 +25,7 @@ defineProps({
             :to="{ name: 'profile', params: { id: f } }"
             :key="`user${user.id}-friend${f}`"
           >
-            {{ usernames[index] }}
+            {{ usernames[f] }}
           </RouterLink>
         </div>
       </div>

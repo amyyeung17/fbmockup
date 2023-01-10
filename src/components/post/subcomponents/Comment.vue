@@ -9,6 +9,7 @@ const props = defineProps({
   }
 });
 
+//Display subset or all comments depending on postComments.display
 const setComments = () => {
   return(props.postComments.comments.length > 3 && !props.postComments.display ?
     props.postComments.comments.slice(0, 3)
@@ -27,10 +28,10 @@ const setComments = () => {
         class="list-group-item py-3"
       >
         <RouterLink
-          class="d-inline nav-link w-50 px-2"
+          class="d-inline nav-link w-50 px-1"
           :to="{ name: 'profile', params: { id: c.id }}"
         > 
-          {{ usernames[c.id] }} :
+          {{ usernames[c.id] }}:
         </RouterLink>
         <p class="d-inline text-break mx-1"> {{ c.c }} </p>
       </li>
