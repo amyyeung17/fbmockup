@@ -20,7 +20,7 @@ const setComments = () => {
 </script>
 
 <template>
-  <ul class="list-group list-group-flush">
+  <ul class="list-group list-group-flush w-100 flex-grow-1">
     <template v-if="postComments.comments.length !== 0">
       <li
         v-for="c in setComments()"
@@ -28,7 +28,7 @@ const setComments = () => {
         class="list-group-item py-3"
       >
         <RouterLink
-          class="d-inline nav-link w-50 px-1"
+          class="d-inline link-primary text-decoration-none w-50 px-1 py-2"
           :to="{ name: 'profile', params: { id: c.id }}"
         > 
           {{ usernames[c.id] }}:
@@ -37,7 +37,8 @@ const setComments = () => {
       </li>
     </template>
     <li v-else class="list-group-item text-center align-middle"> 
-      <p class="my-1"> No comments available </p>
+      <p class="text-secondary my-1"> No comments available </p>
     </li>
   </ul>
 </template>
+

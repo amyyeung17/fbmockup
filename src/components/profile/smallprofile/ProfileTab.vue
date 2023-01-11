@@ -15,12 +15,12 @@ const optionText = {person: props.user.name, pin: props.user.desc, pinmap: props
 </script>
 
 <template>
-  <div class="tab-pane fade w-100" :class="restTab" id="infoTab">
+  <div class="tab-pane tab-pane__div fade w-100 py-2" :class="restTab" id="profileTab">
     <div class="d-flex flex-column align-items-center"> 
       <i class="bi bi-person-circle profile__icon_small"></i>
       <div class="d-flex align-items-center align-self-start" v-for="i of ['person', 'pin', 'pinmap']" :key="i" > 
         <i :class="`bi bi-${optionIcons[i]}`"> </i>
-        <p class="m-2" :class="i === 'person' ? 'display-5 text-info' : ''"> {{ optionText[i]}} </p>
+        <p class="m-2"> {{ optionText[i]}} </p>
       </div>
     </div>
   </div>

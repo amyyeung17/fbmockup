@@ -15,6 +15,12 @@ defineProps({
   windowSize: Boolean,
   usernames: Object 
 })
+
+/**
+ * Component - 
+ * Composite of AddFriend.vue and ConvoBody.vue
+ * Fallthrough attributes allows @send-msg to be binded to an input in ConvoBody.vue
+ */
 </script>
 
 <template>
@@ -29,17 +35,5 @@ defineProps({
     />
     <ConvoBody :usernames="usernames" v-bind="$attrs" />
   </div>
-  <h5 v-else class="m-5">No messages to show!</h5>
+  <p v-else class="text-secondary fs-4 m-5">No messages to show!</p>
 </template>
-
-<style scoped>
-#msg-mid {
-  width: 65%;
-}
-
-@media only screen and (min-width: 992px) {
-  #msg-mid {
-    width: clamp(45%, 45%, 50%);
-  }
-}
-</style>

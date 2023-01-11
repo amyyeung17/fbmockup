@@ -50,7 +50,7 @@ export const useMessageStore = defineStore(
           id: 3,
           convo: [
             {
-              mid: 5,
+              mid: 8,
               msg: [
                 {
                   time: 0,

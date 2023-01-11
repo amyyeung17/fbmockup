@@ -6,11 +6,11 @@ import { useUserStore } from "@/stores/user";
 import { usePostStore } from "@/stores/post";
 import { useCommentStore } from "@/stores/comment";
 
-import Reply from './subcomponents/Reply.vue'
-import Comment from "./subcomponents/Comment.vue";
-import Options from "./subcomponents/Options.vue";
-import PostBody from './subcomponents/PostBody.vue'
-import PostHeader from './subcomponents/PostHeader.vue'
+import Reply from './Reply.vue'
+import Comment from "./Comment.vue";
+import Options from "./Options.vue";
+import PostBody from './PostBody.vue'
+import PostHeader from './PostHeader.vue'
 import CustomInput from "@/components/reusable/CustomInput.vue";
 import IconButton from "@/components/reusable/IconButton.vue";
 
@@ -70,6 +70,7 @@ const getReplyLabel = (user) => {
 </script>
 
 <template>
+  <div class="post-container card m-2">
   <PostHeader 
     :current-id="currentStore.currentId"
     :post="p" 
@@ -102,4 +103,18 @@ const getReplyLabel = (user) => {
     v-model="replyComment"
     @enter-reply="enterReply"
   />
+  </div>
 </template>
+
+<style lang="scss" scoped>
+.post-container {
+  width: 90%;
+}
+
+@include media-breakpoint-up(xxl) {
+  .post-container {
+    min-width: 32.5rem !important;
+    max-width: 35rem;
+  }
+ }
+</style>

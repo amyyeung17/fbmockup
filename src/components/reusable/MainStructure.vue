@@ -8,9 +8,9 @@ const props = defineProps({
 const leftStyle = computed(() => {
   switch(props.page){
     case 'msg':
-      return 'col-4'
+      return 'xs-break col-4 col-lg-3'
     case 'post':
-      return 'col-3'
+      return 'xs-break col-3'
     case 'profile':
       return 'col-4'
   }
@@ -19,9 +19,9 @@ const leftStyle = computed(() => {
 const midStyle = computed(() => {
   switch(props.page){
     case 'msg':
-      return 'col-8 col-lg-6'
+      return 'xs-break col-8 col-lg-7'
     case 'post':
-      return 'col-9 col-lg-6'
+      return 'xs-break col-9 col-lg-6'
     case 'profile':
       return 'col-8'
   }
@@ -32,7 +32,7 @@ const rightStyle = computed(() => {
     case 'msg':
       return 'col-lg-2'
     case 'post':
-      return 'col-lg-3'
+      return 'xs-none col-lg-3'
   }
 })
 </script>
@@ -61,3 +61,20 @@ const rightStyle = computed(() => {
 </template>
 
 
+<style lang="scss" scoped>
+@include media-breakpoint-down(sm) { 
+  .xs-break {
+    width: 100%;
+  }
+
+  .xs-none {
+    display: none !important;
+  }
+}
+
+@include media-breakpoint-down(lg)  { 
+  .xs-none {
+    display: none !important;
+  }
+}
+</style>

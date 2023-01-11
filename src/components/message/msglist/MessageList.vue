@@ -5,52 +5,73 @@ export default {
 </script>
 
 <script setup>
-import { ref, useAttrs } from "vue";
+import { computed, ref, watch, useAttrs } from "vue";
 import CustomInput from "../../reusable/CustomInput.vue";
+import FriendsButton from './FriendsButton.vue'
+import Options from "./Options.vue";
 import Preview from "./Preview.vue";
 
+/**
+ * displayFriends - controls display of messages or friend options 
+ * previewList - list of active conversations
+ */
 const attrs = useAttrs()
 const displayFriends = ref(false);
-defineProps({
+const smallDisplay = ref('none')
+const props = defineProps({
   previewList: {
     type: Array
+  }, 
+  buttonBreakpoint: {
+    type: Boolean
+  },
+  mdBreakpoint: {
+    type: Boolean
   }
 })
+
+watch(() => props.mdBreakpoint, () => {
+  if (props.mdBreakpoint) {
+    smallDisplay.value = 'none'
+  }
+})
+
+//Adds a new conversation to the message store & shows list of active messages again 
 const createNewConvo = (id) => {
   attrs.onHandleNew(id)
   displayFriends.value = !displayFriends.value;
 }
 
+const handleSmallDisplay = (type) => {
+  if (props.mdBreakpoint) {
+    displayFriends.value = !displayFriends.value;
+  } else {
+    smallDisplay.value = (smallDisplay.value === 'none' ? type : 'none')
+  }
+}
+
+const buttonText = computed(() => {
+  return(
+    props.buttonBreakpoint ?
+      (displayFriends.value ? 'Cancel' : 'Start a new convo')
+    :
+      (smallDisplay.value === 'friends' ? 'Cancel' : 'New Convos')
+  )
+})
+
 </script>
 
 <template>
-  <h3 class="display-6 m-2">Messages</h3>
-  <button class="btn btn-secondary m-2" @click="displayFriends = !displayFriends">
-    {{ displayFriends ? 'Cancel' : 'Start a new convo'}}
-  </button>
+  <h2 class="display-6 m-2">Messages</h2>
+  <Options :button-text="buttonText" :md-breakpoint="mdBreakpoint" :small-display="smallDisplay" @on-small-display="handleSmallDisplay" />
   <Preview
-    v-if="previewList.length !== 0 && !displayFriends"
+    v-if="((!displayFriends && mdBreakpoint) || (!mdBreakpoint && smallDisplay === 'previews'))"
     :preview-list="previewList"
     v-bind="$attrs"
   />
-  <h5 v-else-if="!displayFriends" class="my-4"> No active convos </h5>
-  <div v-else class="d-flex flex-column align-items-center w-100 m-2">
-    <h5 class="align-self-start mx-3 my-2">Friends</h5>
-    <button
-      class="btn btn-outline-secondary w-75 m-2"
-      v-for="j of attrs.user.friends"
-      :key="j"
-      @click="createNewConvo(parseInt(j))"
-    >
-      {{ attrs.usernames[j] }}
-    </button>
-  </div>
+  <FriendsButton 
+    v-if="((displayFriends && mdBreakpoint) || (!mdBreakpoint && smallDisplay === 'friends'))" 
+    v-bind="$attrs" 
+    @on-create-convo="createNewConvo" 
+  />
 </template>
-
-<style scoped>
-@media only screen and (max-width: 950px) {
-  #nav-ser {
-    width: 100% !important;
-  }
-}
-</style>

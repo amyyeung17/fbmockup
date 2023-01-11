@@ -5,15 +5,18 @@ import Alert from "@/components/reusable/Alert.vue";
 import CustomInput from "@/components/reusable/CustomInput.vue";
 import IconLink from '@/components/reusable/IconLink.vue'
 
+//Component - Dummy landing page
 </script>
 
 <template>
   <div class="d-flex flex-column align-items-center justify-content-center" id="landing-container">
-    <Alert :condition="true">
-      <template #errorMsg>
-        For demo purposes, username and password are not required to enter.
-      </template>
-    </Alert>
+    <div class="w-75"> 
+      <Alert :condition="true">
+        <template #errorMsg>
+          For demo purposes, username and password are not required to enter.
+        </template>
+      </Alert>
+    </div>
     <h1 class="display-3 text-primary">Fakebook</h1>
     <div class="w-50"> 
       <CustomInput
@@ -45,9 +48,14 @@ import IconLink from '@/components/reusable/IconLink.vue'
     <a href="#" class="nav-link m-2 disabled"> Create Account </a>
     <a href="#" class="nav-link m-2 disabled"> Forget Password </a>
     <IconLink 
-      :icon-class="'info-square'"
+      :icon-class="'info fs-5'"
       :toLocation="'/info'"
+      :link-style="'btn btn-outline-primary p-0'"
     />
+    <a class="link-primary p-2 m-2" href="https://www.ayeung.me"> 
+      <span class="bi bi-arrow-left"></span>
+      Back to portfolio
+    </a>
   </div>
 </template>
 

@@ -24,7 +24,7 @@ const emit = defineEmits(['update-content-text'])
     <div class="d-flex">
       <RouterLink
         :to="{ name: 'profile', params: { id: post.id } }"
-        class="nav-link text-info my-1 py-1 px-2"
+        class="text-decoration-none text-info my-1 py-1 px-2"
       >
         {{ usernames[post.id] }}
       </RouterLink>
@@ -35,7 +35,7 @@ const emit = defineEmits(['update-content-text'])
         </i>
         <RouterLink
           :to="{ name: 'profile', params: { id: post.postLocation } }"
-          class="nav-link text-info my-1 py-1 px-2"
+          class="text-decoration-none text-info my-1 py-1 px-2"
         >
           {{ usernames[post.postLocation] }}
         </RouterLink>

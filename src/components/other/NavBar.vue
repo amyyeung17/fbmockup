@@ -51,11 +51,11 @@ function resize() {
     id="nav-container"
   >
   <div class="container-fluid d-flex align-items-center justify-content-between"> 
-    <RouterLink exact-active-class="exact-active" class="navbar-brand active mx-1" :to="'/home'">
+    <RouterLink exact-active-class="exact-active" class="navbar-brand active ms-1 me-2" :to="'/home'">
       Fakebook
     </RouterLink>
     <CustomInput
-      v-if="screenSize >= 772"
+      v-if="screenSize >= 768"
       :error="true"
       :form-class="'input-group m-2 px-2'"
       :label-text="'navbar'"
@@ -63,7 +63,7 @@ function resize() {
     >
       Search
     </CustomInput>
-    <h5 class="m-0">Hello {{ userStore.getAllUsernames()[currentStore.currentId]}}!</h5>
+    <h5 class=" m-0" id="welcome-text">Hello {{ userStore.getAllUsernames()[currentStore.currentId]}}!</h5>
     <div v-if="992 <= screenSize" class="d-flex align-items-center">
       <Dropdown
         :dropbutton-text="'Select a user'"
@@ -108,15 +108,23 @@ function resize() {
   </nav>
 </template>
 
-<style scoped>
-
-#nav-input {
-  min-width: 12rem;
-}
+<style lang="scss" scoped>
 #nav-logo {
   width: 30%;
 }
 #sm-nav-icon {
   font-size: 1.4rem;
 }
+
+#welcome-text {
+  flex-grow: 1;
+  text-align: center;
+}
+
+@include media-breakpoint-only(md) { 
+  #welcome-text {
+    flex-grow: 0;
+  }
+}
+
 </style>

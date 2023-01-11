@@ -1,4 +1,10 @@
 <script setup>
+//Component - shows options of current active messages 
+
+/**
+ * previewList - list of active conversations 
+ * usernames - fallthrough attributes, list of associated ids and usernames
+ */
 defineProps({
   previewList: {
     type: Array
@@ -12,7 +18,7 @@ const emit = defineEmits(['select-friend'])
 </script>
 
 <template>
-  <div class="list-group w-100 mt-3">
+  <div v-if="previewList.length !== 0" class="list-group w-100 mt-3">
     <a
       class="list-group-item list-group-item-action"
       role="button"
@@ -29,6 +35,7 @@ const emit = defineEmits(['select-friend'])
       </div>
     </a>
   </div>
+  <p v-else class="text-secondary fs-4 my-4"> No active convos </p>
 </template>
 
 <style scoped>

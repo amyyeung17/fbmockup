@@ -60,14 +60,9 @@ const emit = defineEmits(["update:modelValue", "send-event"]);
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .custom-input-div {
-  width: 44%;
-}
-
-@media only screen and (min-width: 992px) {
-  .custom-input-div {
-    width: 33.5%;
-  }
+  flex-grow: 1;
+  max-width: 44%;
 }
 </style>

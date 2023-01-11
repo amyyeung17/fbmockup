@@ -22,7 +22,7 @@ export const useCommentStore = defineStore({
         comments: [
           {
             id: 4,
-            c: "Update, still tired and overworkedsdfsdfdsfsdfdsfdsfsdfsdfsdfsdfsdfsdfsdfwetsdgasetgesfsdfsetgdgrysefsdtg4egdv",
+            c: "Update, still tired and overworked",
           },
         ],
       },

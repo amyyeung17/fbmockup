@@ -4,10 +4,10 @@ import { RouterLink, useRoute } from "vue-router";
 import { useCurrentStore } from "@/stores/currentstate";
 import { usePostStore } from "@/stores/post";
 
-import NewPost from "./subcomponents/NewPost.vue";
+import NewPost from "./NewPost.vue";
 import Alert from "@/components/reusable/Alert.vue";
 import CustomInput from "@/components/reusable/CustomInput.vue";
-import Post from './Post.vue'
+import Post from './post/Post.vue'
 
 const route = useRoute();
 const currentStore = useCurrentStore();
@@ -70,22 +70,16 @@ const createPost = (p) => {
        <strong> Please select a user to access & use all other functions. </strong>
       </template>
     </Alert>
-    <h6 v-if="posts.length === 0 && route.path.includes('profile')" class="m-2">
+    <p v-if="posts.length === 0 && route.path.includes('profile')" class="fs-4 text-secondary m-2">
       No post to show
-    </h6>
-    <div
-      v-for="(p, index) in posts"
-      :key="index"
-      class="card m-2"
-      id="post-container"
-    >
-      <Post :p="p" />
-    </div>
+    </p>
+  
+      <Post v-for="(p, index) in posts" :key="index" :p="p" />
   </div>
 </template>
 
-<style scoped>
-#post-container {
+<style lang="scss">
+.text-break-size {
   width: 90%;
 }
 </style>

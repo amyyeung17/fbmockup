@@ -3,6 +3,10 @@ import { RouterLink } from "vue-router";
 import IconButton from '../../reusable/IconButton.vue'
 import Dropdown from '../../reusable/Dropdown.vue'
 
+/**
+ * Component - Several options, mainly for display purposes.
+ */
+
 defineProps({
   recipient: Number,
   windowSize: Boolean,
@@ -12,7 +16,7 @@ defineProps({
 
 <template>
   <div class="d-flex justify-content-between border-bottom">
-    <h5 class="align-self-start mx-2 p-2"> {{ currentUsername }} </h5>
+    <h3 class="align-self-start mx-2 p-2"> {{ currentUsername }} </h3>
     <Dropdown
       v-if="!windowSize"
       :id-label="'smallConvo'"
@@ -39,3 +43,4 @@ defineProps({
     </Dropdown>
   </div>
 </template>
+

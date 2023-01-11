@@ -1,9 +1,10 @@
 <script setup>
 import { nextTick, ref } from "vue";
 import IconLink from '@/components/reusable/IconLink.vue'
-import FriendsTab from '../smalltabs/FriendsTab.vue'
-import ProfileTab from '../smalltabs/ProfileTab.vue'
-import AllPosts from "@/components/post/AllPosts.vue";
+import FriendsTab from './FriendsTab.vue'
+import PostTab from './PostTab.vue'
+import ProfileTab from './ProfileTab.vue'
+import AllPosts from "@/components/allposts/AllPosts.vue";
 
 const props = defineProps({
   user: Object,
@@ -16,7 +17,7 @@ const restNav = ref('');
 const restTab = ref('');
 const allTabs = {
   'Posts': {'icon': 'pencil', 'tab': '#postTab'}, 
-  'Profile': {'icon': 'file-person', 'tab': '#infoTab'}, 
+  'Profile': {'icon': 'file-person', 'tab': '#profileTab'}, 
   'Friends': {'icon': 'people', 'tab': '#friendTab'}
   }
 
@@ -42,8 +43,8 @@ const resetProfile = (f) => {
 </script>
 
 <template>
-  <div class="w-100"> 
-    <ul class="nav nav-tabs my-2" id="profileTab" role="tablist">
+  <div class="w-100 px-3"> 
+    <ul class="nav nav-tabs my-2" id="smallProfile" role="tablist">
       <li 
         v-for="[text, info] of Object.entries(allTabs)"
         class="nav-item mx-2"
@@ -52,27 +53,21 @@ const resetProfile = (f) => {
         <IconLink 
           :icon-class="info.icon"
           :extra-attrs="{'data-bs-toggle': 'tab', 'role': 'tab', 'href': info.tab}"
-          :link-style="(text === 'Posts' ? firstNav : restNav) + ' mb-0 ' "
+          :link-style="(text === 'Posts' ? firstNav : restNav) + ' nav-link mb-0 ' "
         >
-          {{ text }}
+          <span class="profile-tab-text"> {{ text }} </span>
         </IconLink>
       </li>
     </ul>
-    <div class="tab-content d-flex justify-content-center w-100" id="profileTabContent">
-      <div
-        class="tab-pane fade show active tab-pane_div w-100 py-2"
-        :class="firstTab"
-        id="postTab"
-      >
-        <AllPosts />
-      </div>
+    <div class="tab-content d-flex justify-content-center w-100" id="smallProfileContent">
+      <PostTab :first-tab="firstTab"/>
       <ProfileTab :user="user" :rest-tab="restTab" />
-      <FriendsTab :user-friends="user.friends" :usernames="usernames" :rest-tab="restTab" @handle-reset="resetProfile"  />
+      <FriendsTab :user-friends="user.friends" :usernames="usernames" :rest-tab="restTab" @on-reset="resetProfile"  />
     </div>
   </div>
 </template>
 
-<style>
+<style lang="scss">
 
 .tab-pane__div {
   width: 85%;
@@ -82,5 +77,11 @@ const resetProfile = (f) => {
   font-size: 4.5rem;
   background-size: 4.5rem;
   margin: 0;
+}
+
+@media only screen and (max-width: 449px) {
+  .profile-tab-text {
+    display: none;
+  }
 }
 </style>

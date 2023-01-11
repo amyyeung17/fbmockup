@@ -4,10 +4,10 @@ import { useRoute } from "vue-router";
 import { useUserStore } from "@/stores/user";
 import { useCurrentStore } from "@/stores/currentstate";
 
-import Banner from './subcomponents/Banner.vue'
-import LargeProfile from "./subcomponents/LargeProfile.vue";
-import SmallProfile from "./subcomponents/SmallProfile.vue";
-import Post from "@/components/post/Post.vue";
+import Banner from './Banner.vue'
+import LargeProfile from "./largeprofile/LargeProfile.vue";
+import SmallProfile from "./smallprofile/SmallProfile.vue";
+import Post from "@/components/allposts/post/Post.vue";
 import IconButton from '@/components/reusable/IconButton.vue'
 import Dropdown from '@/components/reusable/Dropdown.vue'
 
@@ -43,10 +43,7 @@ onMounted(() => {
   </div>
 </template>
 
-<style>
-.div_size {
-  width: clamp(65%, 65%, 70%);
-}
+<style scoped>
 #profile-cover {
   height: 200px;
 }

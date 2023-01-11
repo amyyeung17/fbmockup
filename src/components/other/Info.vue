@@ -1,8 +1,7 @@
 <script setup>
-import { ref } from "vue";
-import { useRouter } from "vue-router";
-
-const router = useRouter();
+import { useRouter } from 'vue-router'
+const router = useRouter()
+//Component - info page, links to code and portfolio
 </script>
 
 <template>
@@ -25,11 +24,22 @@ const router = useRouter();
       <a class="link-primary link-button fs-5 p-2" href="https://github.com/amyyeung17/fbmockup" target="_blank"> Code </a>
       <a class="link-primary link-button fs-5 p-2" href="https://www.ayeung.me"> Portfolio </a>
     </div>
+    <button class="nav-link border-0 text-decoration-none p-2 m-2" @click="router.back()"> 
+      <span class="bi bi-arrow-left"></span>
+      Back 
+    </button>
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .link-button {
   min-width: 7.5rem;
+}
+
+.nav-link {
+  background-color: transparent;
+  &:hover {
+    background-color: $gray-200;
+  }
 }
 </style>

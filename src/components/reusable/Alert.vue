@@ -10,7 +10,7 @@ const emit = defineEmits(['handle-error'])
 <template>
   <template v-if="condition">
     <div
-      class="alert alert-info alert-dismissible  w-100 fade show m-2"
+      class="alert alert-info alert-dismissible w-100 fade show m-2"
       role="alert"
     >
       <span> <slot name="errorMsg"></slot> </span>

@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watch } from "vue";
+import { computed, ref, watch, onMounted } from "vue";
 import { RouterLink, useRoute, useRouter } from "vue-router";
 import { useCurrentStore } from "@/stores/currentstate";
 import { useUserStore } from "@/stores/user";
@@ -18,8 +18,16 @@ const usernames = userStore.getAllUsernames()
 const currentConvo = ref([])
 
 /**
+ * When going to the url directly
+ */
+onMounted(() => {
+  if (currentStore.currentId === -1) {
+    router.push('/home')
+  }
+})
+/**
  * Updates currently displaed message's recipient (currentStore.currentMsg) when navigating
- * If user has no messages, the value is set to the current user 
+ * If user has no messages, the value is set to the current user.  
  * */
 
 const updateMessage = () => {
@@ -45,7 +53,7 @@ watch(
       if (route.path.includes('message')) {
         updateMessage();
       }
-    } 
+    }
   },
   { immediate: true }
 );
@@ -66,6 +74,19 @@ const handleNew = (id) => {
   }
 }
 
+/**
+ * If user is not 'signed in', return empty array during initial mount
+ * to allow onMounted hook to proceed. 
+ */
+const getCurrentMsgs = computed(() => {
+  return (
+    currentStore.currentId !== -1 ?
+      messageStore.getCurrentMsg(route.params.id)
+    : 
+      []
+  )
+})
+
 </script>
 
 <template>
@@ -75,13 +96,15 @@ const handleNew = (id) => {
         :preview-list="messageStore.getAllMsgs(route.params.id)"
         :user="userStore.getCurrentUser()"
         :usernames="usernames"
+        :md-breakpoint="currentStore.windowWidth >= 576"
+        :button-breakpoint="currentStore.windowWidth >= 615"
         @handle-new="handleNew"
         @select-friend="currentStore.setMsg"
       />
     </template>
     <template #middle> 
       <Convo
-        :convo-items="messageStore.getCurrentMsg(route.params.id)" 
+        :convo-items="getCurrentMsgs" 
         :current-msg="currentStore.currentMsg"
         :usernames="usernames"
         :window-size="currentStore.getWindow"
@@ -89,8 +112,8 @@ const handleNew = (id) => {
       />
     </template>
     <template #right>
-      <template v-if="currentStore.getWindow"> 
-        <h4 class="m-2"> {{ usernames[currentStore.currentMsg] }} </h4>
+      <template id="optional-buttons"> 
+        <h3 class="text-center m-2"> {{ usernames[currentStore.currentMsg] }} </h3>
         <i class="bi bi-person-circle profile-pic" id="iconpic"></i>
         <RouterLink
           class="list-group-item list-group-item-action p-2"
@@ -112,8 +135,20 @@ const handleNew = (id) => {
   </MainStructure>
 </template>
 
-<style>
+<style lang="scss" scoped>
 #iconpic {
   font-size: 5rem
 }
+#optional-buttons {
+  display: none;
+}
+@include media-breakpoint-up(lg) { 
+  #optional-buttons {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
 </style>

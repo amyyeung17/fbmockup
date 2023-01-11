@@ -8,13 +8,13 @@ const props = defineProps({
   }
 });
 
-const emit = defineEmits(['handle-reset'])
+const emit = defineEmits(['on-reset'])
 
 </script>
 
 <template>
   <div
-    class="tab-pane fade tab-pane__div py-2"
+    class="tab-pane fade tab-pane__div py-2 w-100"
     :class="restTab"
     id="friendTab"
   >
@@ -31,7 +31,7 @@ const emit = defineEmits(['handle-reset'])
             type="button" 
             class="btn btn-secondary"
             :to="{ name: 'profile', params: { id: f }}" 
-            @click="emit('handle-reset')"
+            @click="emit('on-reset')"
           >
            {{ usernames[index] }}
           </RouterLink>
@@ -45,14 +45,5 @@ const emit = defineEmits(['handle-reset'])
 #friend-profile {
   width: 35%;
   height: 40%;
-}
-.tab-pane__div {
-  width: 85%;
-  min-height: 70vh;
-}
-.profile__icon_small {
-  font-size: 4.5rem;
-  background-size: 4.5rem;
-  margin: 0;
 }
 </style>

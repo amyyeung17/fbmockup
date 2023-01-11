@@ -6,6 +6,11 @@ import CustomInput from "../../reusable/CustomInput.vue";
 const currentMessage = ref('');
 const convoContainer = ref(null);
 
+/**
+ * Component - 
+ * Body of messages. Each message is linked the user that has sent the message. 
+ */
+
  defineProps({
   convoItems: Object,
   usernames: Object
@@ -13,6 +18,10 @@ const convoContainer = ref(null);
 
 const emit = defineEmits(['send-msg'])
 
+/**
+ * Emits callback function @send-msg, which updates the message store.
+ * Reset the input value and automatically scroll down to the most recent message.
+ */
 const enterMsg = (content) => {
   emit('send-msg', content)
   currentMessage.value = '';

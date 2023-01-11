@@ -48,12 +48,17 @@ const emit = defineEmits(['enter-post'])
         </template>
     </CustomInput>
     <p class="d-inline me-2 card-subtitle text-muted"> {{ post.likes.length + " likes" }} </p>
-    <p
-      class="d-inline card-subtitle"
+    <p 
+      class="d-inline text-primary"
       v-for="l in post.likes.length"
       :key="`post${post.pid}-like-${l}`"
     >
-      {{ usernames[post.likes[l - 1]] + (l !== post.likes.length ? ', ' : '')}}
+      <RouterLink
+        class="link-primary text-decoration-none my-0"
+        :to="{name: 'profile', params: { id: post.likes[l - 1]}}"
+      >
+        {{ usernames[post.likes[l - 1]]}}
+      </RouterLink>{{(l !== post.likes.length ? ', ' : '')}}
     </p>
   </div>
 </template>

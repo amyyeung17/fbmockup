@@ -1,58 +1,61 @@
 <script setup>
 import { RouterView, useRoute } from "vue-router";
+import IconButton from '@/components/reusable/IconButton.vue'
 import NavBar from "@/components/other/NavBar.vue";
-
+// max-width: 65rem;
 const route = useRoute();
+
+//Allows user to scroll back immediately to the top
+function scrollBack() {
+  window.scrollTo({ behavior: "smooth", top: 0 });
+}
 </script>
 
 <template>
   <NavBar v-if="!route.path.includes('welcome') && !route.path.includes('info')" />
   <div class="container-md d-flex justify-content-center">
-      <RouterView></RouterView>
+    <RouterView></RouterView>
+    <IconButton
+      v-if="route.path.includes('/home')"
+      :icon-class="'arrow-up'"
+      :button-color="'btn-primary'"
+      :button-id="'nav-up-icon'"
+      :button-style="'position-fixed'"
+      @handle-click="scrollBack()"
+    />
   </div>
 </template>
-<style>
+<style lang="scss" scoped>
 @import "@/assets/base.css";
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
+
+@include media-breakpoint-only(xs) {
+  #nav-up-icon {
+    background-color: transparent;
+    border: none;
+    color: $primary;
+    left: 89.5%;
+    top: 92.5%;
+
+    &:hover {
+      background-color: $gray-200;
+    }
   }
 }
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-.row {
-  max-width: 65rem;
-}
-
-@media only screen and (max-width: 771px) {
-  #portfolio-button {
-    left: 90%;
+@media (min-width: 576px) and (max-width: 684px) {
+  #nav-up-icon {
+    left: 91.5%;
     top: 92.5%;
   }
-};
+}
 
-@media only screen and (min-width: 772px) {
-  #portfolio-button {
-    left: 7.5%;
+@media (min-width: 685px) {
+  #nav-up-icon {
+    left: 92.5%;
     top: 92.5%;
   }
-};
+}
+
+
 </style>

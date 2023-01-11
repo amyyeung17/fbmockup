@@ -16,7 +16,7 @@ defineProps({
   },
   linkStyle: {
     type: [String, Array],
-    default: ''
+    default: 'link-primary text-decoration-none'
   },
   toLocation: {
     type: [Object, String],
@@ -30,7 +30,7 @@ const emit = defineEmits(['handle-click'])
 <template>
   <RouterLink
     :to="toLocation"
-    :class="`nav-link my-2 fs-5 ${linkStyle}`"
+    :class="`my-2 fs-5 ${linkStyle}`"
     v-bind="extraAttrs"
     @click="emit('handle-click')"
   >
