@@ -73,8 +73,7 @@ const createPost = (p) => {
     <p v-if="posts.length === 0 && route.path.includes('profile')" class="fs-4 text-secondary m-2">
       No post to show
     </p>
-  
-      <Post v-for="(p, index) in posts" :key="index" :p="p" />
+    <Post v-for="(p, index) in posts" :key="index" :p="p" />
   </div>
 </template>
 
