@@ -6,11 +6,6 @@ import CustomInput from "../../reusable/CustomInput.vue";
 const currentMessage = ref('');
 const convoContainer = ref(null);
 
-/**
- * Component - 
- * Body of messages. Each message is linked the user that has sent the message. 
- */
-
  defineProps({
   convoItems: Object,
   usernames: Object
@@ -30,6 +25,22 @@ const enterMsg = (content) => {
   });
 }
 
+</script>
+
+<script>
+/**
+ * @vue-prop {Object} convoItems - all messages between the current user and recipient
+ * @vue-prop {Object} usernames - user ids as keys and associated their associated username
+ * 
+ * @vue-data {string} currentMessage - input string for the new message
+ * @vue-data {HTMLElement} convoContainer - ref of the convo messages, allows automatic scroll when a new message is sent
+ * 
+ * @vue-event {undefined} sendMsg - adds new message to the message store 
+ */
+
+export default {
+  name: 'ConvoBody'
+}
 </script>
 
 <template>  

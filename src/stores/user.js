@@ -86,7 +86,7 @@ export const useUserStore = defineStore({
     getCurrentUser: (state) => {
       return () => {
         const currentStore = useCurrentStore()
-        return state.getUser(currentStore.currentId)
+        return state.getUser(currentStore.userId)
       }
     },
     getFriends: (state) => {

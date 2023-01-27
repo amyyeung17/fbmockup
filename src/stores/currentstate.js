@@ -3,34 +3,34 @@ import { defineStore } from "pinia";
 export const useCurrentStore = defineStore({
   id: 'current', 
   state: () => ({
-    currentId: -1,
+    userId: -1,
     error: false,
     errorMsg: '',
-    currentMsg: 0,
-    currentPost: -2,
-    windowWidth: 0,
+    recipientId: 0,
+    postId: -2,
+    windowWidth: 0
   }),
   getters: {
     getWindow: (state) => {
       return 991 < state.windowWidth;
-    },
+    }
   },
   actions: {
     setUser(i) {
-      this.currentId = parseInt(i);
+      this.userId = parseInt(i);
     },
     setError(props) {
-      this.errorMsg = (this.error || this.currentId === -1 ? '' : props)
+      this.errorMsg = (this.error || this.userId === -1 ? '' : props)
       this.error = !this.error;
     },
     setMsg(m) {
-      this.currentMsg = parseInt(m);
+      this.recipientId = parseInt(m);
     },
     setPost(p) {
-      this.currentPost = p
+      this.postId = p
     },
     setWindowWidth(w) {
       this.windowWidth = w;
-    },
+    }
   },
 });

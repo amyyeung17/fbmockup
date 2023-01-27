@@ -1,3 +1,4 @@
+
 <script setup>
 import FakeAds from "@/components/other/FakeAds.vue";
 import Menus from "@/components/other/Menu.vue";

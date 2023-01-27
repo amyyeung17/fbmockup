@@ -66,7 +66,7 @@ export const usePostStore = defineStore({
       {
         pid: 6,
         id: 6,
-        content: 'Throwing a party with my bro, be there @ 4!!',
+        content: 'Throwing a party, be there @ 4!!',
         likes: [7, 8, 9],
         time: '06:30',
         edit: false,
@@ -117,13 +117,13 @@ export const usePostStore = defineStore({
     getCurrentPost: (state) => {
       return () => {
         const { currentStore } = state.getStores()
-        return state.getPost(currentStore.currentPost)
+        return state.getPost(currentStore.postId)
       }
     },
     getCurrentLikes: (state) => {
       return (pid) => {
         const { currentStore } = state.getStores()
-        return state.getPost(pid).likes.indexOf(currentStore.currentId);
+        return state.getPost(pid).likes.indexOf(currentStore.userId);
       };
     },
     getFilterId: (state) => {
@@ -134,8 +134,8 @@ export const usePostStore = defineStore({
     getFilterAll: (state) => {
       return () => {
         const { currentStore, userStore } = state.getStores()
-        const userFriends = userStore.getUser(currentStore.currentId).friends
-        const userPosts = state.getFilterId(currentStore.currentId)
+        const userFriends = userStore.getUser(currentStore.userId).friends
+        const userPosts = state.getFilterId(currentStore.userId)
         const friendsPosts = state.post.filter(p => (userFriends.indexOf(p.id) !== -1) || (userFriends.indexOf(p.postLocation) !== -1) && ![...userPosts.map(u => u.pid)].includes(p.pid))
         return [...userPosts, ...friendsPosts].sort((a, b) => a.time - b.time)
       }
@@ -144,7 +144,7 @@ export const usePostStore = defineStore({
   actions: {
     setEdit(pid) {
       const { currentStore } = this.getStores()
-      if (currentStore.currentPost !== -2) {
+      if (currentStore.postId !== -2) {
         const oldPost = this.getCurrentPost()
         oldPost.edit = !oldPost.edit
       }
@@ -158,7 +158,7 @@ export const usePostStore = defineStore({
       if (this.getCurrentLikes(pid) !== -1) {
         p.likes.splice(this.getCurrentLikes(pid), 1);
       } else {
-        p.likes.push(currentStore.currentId);
+        p.likes.push(currentStore.userId);
       }
     },
     enterPost(edit, type) {
@@ -173,10 +173,10 @@ export const usePostStore = defineStore({
     update(newPost, postLocation) {
       const currentStore = useCurrentStore();
       const commentStore = useCommentStore();
-      if (newPost !== '' && currentStore.currentId !== -1) {
+      if (newPost !== '' && currentStore.userId !== -1) {
         this.post.push({
           pid: this.post.length,
-          id: currentStore.currentId,
+          id: currentStore.userId,
           content: newPost,
           time: `13:${this.post.length + 1}`,
           likes: [],

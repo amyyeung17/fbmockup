@@ -1,5 +1,6 @@
 <script setup>
 import { RouterLink } from 'vue-router'
+
 defineProps({
   user: {
     type: Object
@@ -8,13 +9,23 @@ defineProps({
     type: Object
   }
 });
+</script>
 
+<script>
+/**
+ * @vue-prop {Object} user - current user
+ * @vue-prop {Object} usernames - user ids as keys and associated their associated username
+ */
+
+export default {
+  name: 'FriendsList'
+}
 </script>
 
 <template>
   <div class="bg-light w-100 p-3"> 
     <div class="border bg-white w-100 mt-2 py-2 px-3 ">
-      <h4 class="m-2"><i class="bi bi-people"></i> Friends List</h4>
+      <h4 class="m-2"><span class="bi bi-people"></span> Friends List</h4>
       <div class="border-bottom w-100 h-0 mb-2"></div>
       <div class="d-flex flex-column align-items-center w-100 mh-100 overflow-auto" id="lg-friend-div"> 
         <RouterLink

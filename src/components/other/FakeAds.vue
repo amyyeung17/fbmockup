@@ -4,13 +4,13 @@
     <div
       class="d-flex justify-content-center align-items-center border border-primary w-100 ad"
     >
-      <i class="bi bi-shop ad__icon"></i>
+      <span class="bi bi-shop ad__icon"></span>
     </div>
     <p class="w-75 py-2 text-center">Shop today at Fake Ad #1!</p>
     <div
       class="d-flex justify-content-center align-items-center border border-primary w-100 ad"
     >
-      <i class="bi bi-signpost-2 ad__icon"></i>
+      <span class="bi bi-signpost-2 ad__icon"></span>
     </div>
     <p class="w-75 py-2 text-center">Next vacation stop: Fake Ad #2.</p>
   </div>

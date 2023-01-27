@@ -1,15 +1,20 @@
-<script>
-export default {
-  inheritAttrs: false
-}
-</script>
-
 <script setup>
-import { RouterLink } from 'vue-router'
+import AllPosts from "@/components/allposts/AllPosts.vue";
 import FriendsList from './FriendsList.vue'
 import ProfileInfo from './ProfileInfo.vue'
-import AllPosts from "@/components/allposts/AllPosts.vue";
 import MainStructure from "@/components/reusable/MainStructure.vue";
+</script>
+
+<script>
+/**
+ * Fallthrough attributes of user (Object) is passed to ProfileInfo.
+ * Fallthrough attributes of user (Object) and usernames {Object} are passed to ProfileInfo.
+ */
+
+export default {
+  inheritAttrs: false,
+  name: 'LargeProfile'
+}
 </script>
 
 <template>

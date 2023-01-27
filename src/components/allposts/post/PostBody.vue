@@ -1,9 +1,3 @@
-<script>
-export default {
-  inheritAttrs: false
-}
-</script>
-
 <script setup>
 import { RouterLink } from 'vue-router'
 import CustomInput from '../../reusable/CustomInput.vue'
@@ -21,17 +15,34 @@ defineProps({
 const emit = defineEmits(['enter-post'])
 </script>
 
+<script>
+/**
+ * Fallthrough attributes of v-model (modelValue & @update:modelValue) are passed to CustomInput.
+ * 
+ * @vue-prop {Object} post - post content
+ * @vue-prop {Object} usernames - user ids as keys and associated their associated usernames
+ * 
+ * @vue-event {string} enterPost - controls whether content is updated or not. Options are only
+ * available when post.edit is true. 
+ */
+
+export default {
+  inheritAttrs: false,
+  name: 'PostBody'
+}
+</script>
+
 <template>
   <div class="card-body card-body-dimensions pt-0">
     <p v-if="!post.edit" class="card-text fs-3 pb-4"> {{ post.content }} </p>
-      <CustomInput
-        v-else
-        :label-text="'options'"
-        :input-class="'w-100'" 
-        v-bind="$attrs"
-      > 
-        <template #inputButton>
-          <div class="d-flex justify-content-end w-100">
+    <CustomInput
+      v-else
+      :label-text="'options'"
+      :input-class="'w-100'" 
+      v-bind="$attrs"
+    > 
+      <template #inputButton>
+        <div class="d-flex justify-content-end w-100">
           <button
             class="btn btn-outline-secondary m-2 "
             @click="emit('enter-post', 'cancel')"
@@ -45,7 +56,7 @@ const emit = defineEmits(['enter-post'])
             Save
           </button>
         </div>
-        </template>
+      </template>
     </CustomInput>
     <p class="d-inline me-2 card-subtitle text-muted"> {{ post.likes.length + " likes" }} </p>
     <p 

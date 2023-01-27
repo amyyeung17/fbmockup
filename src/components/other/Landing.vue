@@ -1,24 +1,24 @@
 <script setup>
 import { ref } from "vue";
 import { RouterLink } from "vue-router";
+
 import Alert from "@/components/reusable/Alert.vue";
 import CustomInput from "@/components/reusable/CustomInput.vue";
 import IconLink from '@/components/reusable/IconLink.vue'
 
-//Component - Dummy landing page
 </script>
 
 <template>
   <div class="d-flex flex-column align-items-center justify-content-center" id="landing-container">
-    <div class="w-75"> 
-      <Alert :condition="true">
-        <template #errorMsg>
+    <div class="w-75 land-alert"> 
+      <Alert :condition="true" :alert-style="'alert-info land-box'">
+        <template #msg>
           For demo purposes, username and password are not required to enter.
         </template>
       </Alert>
     </div>
     <h1 class="display-3 text-primary">Fakebook</h1>
-    <div class="w-50"> 
+    <div class="w-50 sign"> 
       <CustomInput
         :form-class="'form-floating w-75 mx-2 my-3'"
         :input-class="'form-control w-100'"
@@ -59,10 +59,25 @@ import IconLink from '@/components/reusable/IconLink.vue'
   </div>
 </template>
 
-<style>
+<style lang="scss" scoped>
 #landing-container {
   height: 100vh;
   max-width: 100%;
   width: 100vw;
+}
+
+@include media-breakpoint-down(sm) {
+  .sign {
+    width: 100% !important;
+  }
+
+  .land-alert {
+    width: 90% !important;
+  }
+
+  .land-box {
+    margin-left: 0rem !important;
+    margin-right: 0rem !important;
+  }
 }
 </style>

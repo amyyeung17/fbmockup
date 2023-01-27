@@ -4,12 +4,10 @@ import IconButton from '@/components/reusable/IconButton.vue'
 
 defineProps({
   currentId: {
-    type: Number,
-    default: 0
+    type: Number
   },
   post: {
-    type: Object,
-    default: {}
+    type: Object
   },
   usernames: {
     type: Object
@@ -17,6 +15,21 @@ defineProps({
 })
 
 const emit = defineEmits(['update-content-text'])
+</script>
+
+<script>
+/**
+ * @vue-prop {Object} currentId - signed-in user 
+ * @vue-prop {Object} post - post content
+ * @vue-prop {Object} usernames - user ids as keys and associated their associated usernames
+ * 
+ * @vue-event {number} updateContentText - if post.id is the same as the signed-in user, 
+ * the option to edit (changing post.edit) appears. 
+ */
+
+export default {
+  name: 'PostHeader'
+}
 </script>
 
 <template>
@@ -29,10 +42,7 @@ const emit = defineEmits(['update-content-text'])
         {{ usernames[post.id] }}
       </RouterLink>
       <template v-if="post.postLocation !== post.id">
-        <i
-          class="bi bi-arrow-right d-flex align-self-center mx-2 my-1"
-        >
-        </i>
+        <span class="bi bi-arrow-right d-flex align-self-center mx-2 my-1"></span>
         <RouterLink
           :to="{ name: 'profile', params: { id: post.postLocation } }"
           class="text-decoration-none text-info my-1 py-1 px-2"
@@ -45,7 +55,7 @@ const emit = defineEmits(['update-content-text'])
       v-if="post.id === currentId && !post.edit"
       :button-style="'border-0'"
       :icon-class="'pencil-square fs-6'" 
-      @handle-click="emit('update-content-text', post.pid)"
+      @on-click="emit('update-content-text', post.pid)"
     />
   </div>
 </template>
@@ -55,3 +65,4 @@ const emit = defineEmits(['update-content-text'])
   min-height: 8rem;
 }
 </style>
+

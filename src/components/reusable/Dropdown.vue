@@ -28,8 +28,25 @@ const props = defineProps({
   },
 })
 
-//button -> in template 
-const emit = defineEmits(['handle-click', 'handle-menu'])
+const emit = defineEmits(['on-drop-click', 'on-menu-click'])
+</script>
+
+<script>
+/**
+ * @vue-prop {string} [dropdownStyle = ''] - style classes applied to the most outer div
+ * @vue-prop {Object} [menuOptions = {}] - list of availble options to display in dropdown
+ * @vue-prop {string} [menuStyle = ''] - style classes applied to the actual dropdrown div
+ * @vue-prop {string} [idLabel = ''] - id for the button and to label the targeted dropdown div 
+ * @vue-prop {string} [dropbuttonText = ''] - button text if using the default button type 
+ * @vue-prop {string} [dropbuttonStyle = 'nav-link dropdown-toggle border-0']
+ * 
+ * @vue-event {number} onDropClick - callback that requires an argument
+ * @vue-event {} onMenuClick - general callback with no arguments
+ */
+
+export default {
+  name: 'Dropdown'
+}
 </script>
 
 <template>
@@ -46,7 +63,6 @@ const emit = defineEmits(['handle-click', 'handle-menu'])
         {{ dropbuttonText }}
       </button>
     </slot>
-
     <div 
       class="dropdown-menu"
       :class="menuStyle" 
@@ -60,7 +76,7 @@ const emit = defineEmits(['handle-click', 'handle-menu'])
           v-for="[index, info] of menuOptions"
           :key="index"
           type="button"
-          v-on="idLabel.includes('nav-dropdown') ? {click: () => emit('handle-menu', info.id)} : {click: () => emit('handle-menu')}"
+          v-on="idLabel.includes('nav-dropdown') ? {click: () => emit('on-menu-click', info.id)} : {click: () => emit('on-menu-click')}"
         >
           {{idLabel.includes('nav-dropdown') ? info.name : info }}
         </button>

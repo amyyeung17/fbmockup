@@ -6,7 +6,7 @@ defineProps({
   currentUser: {
     type: Boolean,
   },
-  currentUsername: {
+  profileUsername: {
     type: String
   },
   friendStat: {
@@ -17,10 +17,25 @@ defineProps({
 const emit = defineEmits(['edit-friends'])
 </script>
 
+<script>
+/**
+ * @vue-prop {boolean} currentUser - checks to see there is a user signed in. If so, checks if the current profile is that user's. 
+ * Controls whether the 'add friend' option is available. 
+ * @vue-prop {string} profileUsername - the profile's username
+ * @vue-prop {boolean} friendStat - if there is a current user, friendship status with the person in the profile
+ * 
+ * @vue-event {undefined} editFriends - adds or removes person from your friend's list 
+ */
+
+export default {
+  name: 'Banner'
+}
+</script>
+
 <template>
   <div class="d-flex bg-light text-center w-100 py-2 px-3 mb-2" :style="{ height: '22vh' }">
-    <i class="bi bi-person-circle profile-pic"></i>
-    <h2 class="align-self-end display-5 ms-2 py-1"> {{ currentUsername }} </h2>
+    <span class="bi bi-person-circle profile-pic"></span>
+    <h2 class="align-self-end display-5 ms-2 py-1"> {{ profileUsername }} </h2>
     <div
       class="d-flex flex-grow-1 p-3 justify-content-end" 
       v-if="currentUser"
@@ -29,7 +44,7 @@ const emit = defineEmits(['edit-friends'])
         v-if="!friendStat"
         :icon-class="'person-plus'"
         :button-style="'align-self-end'"
-        @handle-click="emit('edit-friends')"
+        @on-click="emit('edit-friends')"
       >
         <span class="mx-1">
           Add Friend
@@ -41,7 +56,7 @@ const emit = defineEmits(['edit-friends'])
         :id-label="'dropfriend'"
         :menu-options="['Unfriend'].entries()"
         :menu-style="'dropdown-menu-end'"
-        @handle-menu="emit('edit-friends')"
+        @on-menu-click="emit('edit-friends')"
       > 
         <template #dropbutton>
           <IconButton

@@ -1,21 +1,20 @@
 <script setup>
 import { useCurrentStore } from "@/stores/currentstate";
+
 const currentStore = useCurrentStore();
 
 defineProps({
   formClass: {
-    type: [String, Array],
+    type: String,
     default: 'input-group w-100 m-2 px-2',
   },
   inputClass: {
-    type: [String, Array],
-    default: () => {
-      return ["form-control", "w-75"];
-    },
+    type: String,
+    default: 'form-control w-75'
   },
   placeholderText: {
     type: String,
-    default: "Placeholder",
+    default: 'Placeholder',
   },
   modelValue: String,
   error: {
@@ -31,6 +30,24 @@ defineProps({
 const emit = defineEmits(["update:modelValue", "send-event"]);
 </script>
 
+<script>
+/**
+ * @vue-prop {string} [formClass = 'input-group w-100 m-2 px-2']
+ * @vue-prop {string} [inputClass = 'form-control w-75']
+ * @vue-prop {string} [placeholderText = 'Placeholder']
+ * @vue-prop {string} modelValue - prop that is binded to the input's value
+ * @vue-prop {boolean} [error = false] - disables the input 
+ * @vue-prop {string} [labelText = ''] - used as id for the input
+ * 
+ * @vue-event {} update:modelValue - updates the modelValue prop 
+ * @vue-event {} send-event - executes a function that uses the final modelValue
+ */
+
+export default {
+  name: 'CustomInput'
+}
+</script>
+
 <template>
   <div class="d-flex flex-column align-items-center" :class="!labelText.includes('navbar') ? 'w-100' : 'custom-input-div'">
     <div :class="formClass">
@@ -43,7 +60,7 @@ const emit = defineEmits(["update:modelValue", "send-event"]);
         :id="labelText"
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)"
-        :disabled="error || (currentStore.currentId === -1)"
+        :disabled="error || (currentStore.userId === -1)"
       />
       <slot name="inputButton"> 
         <button

@@ -21,10 +21,6 @@ const allTabs = {
   'Friends': {'icon': 'people', 'tab': '#friendTab'}
   }
 
-const allProps = {
-  'Posts': {},
-  'Profile': {'user' : props.user}
-}
 
 const resetProfile = (f) => {
   firstNav.value = ''
@@ -39,6 +35,22 @@ const resetProfile = (f) => {
     restTab.value = ''
     window.scrollTo({ behavior: "instant", top: 0 });
   });
+}
+</script>
+
+<script>
+/**
+ * @vue-prop {Object} user - current user
+ * @vue-prop {Object} usernames - user ids as keys and associated their associated username
+ * 
+ * @vue-data {string} firstNav - style classes
+ * @vue-data {string} firstTab - style classes
+ * @vue-data {string} restNav - style classes 
+ * @vue-data {string} allTabs - style classes
+ */
+
+export default {
+  name: 'SmallProfile'
 }
 </script>
 
@@ -62,13 +74,16 @@ const resetProfile = (f) => {
     <div class="tab-content d-flex justify-content-center w-100" id="smallProfileContent">
       <PostTab :first-tab="firstTab"/>
       <ProfileTab :user="user" :rest-tab="restTab" />
-      <FriendsTab :user-friends="user.friends" :usernames="usernames" :rest-tab="restTab" @on-reset="resetProfile"  />
+      <FriendsTab 
+        :user-friends="user.friends" 
+        :usernames="usernames" 
+        :rest-tab="restTab" @on-reset="resetProfile"  
+      />
     </div>
   </div>
 </template>
 
 <style lang="scss">
-
 .tab-pane__div {
   width: 85%;
   min-height: 70vh;

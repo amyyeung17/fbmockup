@@ -2,9 +2,11 @@ import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 import { useCurrentStore } from "@/stores/currentstate";
 
+
 export const useMessageStore = defineStore(
   'message', () => {
     const currentStore = useCurrentStore();
+
     const message = ref([
         {
           id: 0,
@@ -176,39 +178,68 @@ export const useMessageStore = defineStore(
     })
 
     const getCurrentMsg = computed(() => {
-      return (id) => getMsg.value(id, currentStore.currentMsg)
+      return (id) => (currentStore.userId !== -1 ? getMsg.value(id, currentStore.recipientId) : [])
     })
   
-    const getAllCurrent = computed(() => {return getAllMsgs.value(currentStore.currentId)})
+    const getAllCurrent = computed(() => {return getAllMsgs.value(currentStore.userId)})
 
     function update(id) {
       if (getAllCurrent.value.length === 0 || (getAllCurrent.value.length !== 0 && [...getAllCurrent.value.map(s => s.mid)].indexOf(id) === -1)) {
         getAllCurrent.value.push({ mid: id, msg: [] })
-        getAllMsgs.value(id).push({ mid: currentStore.currentId, msg: [] })
+        getAllMsgs.value(id).push({ mid: currentStore.userId, msg: [] })
       }
       currentStore.setMsg(id);
     }
 
     function enterMsg(content) {
-      const mes = getCurrentMsg.value(currentStore.currentId);
-      const recipient = getMsg.value(currentStore.currentMsg, currentStore.currentId)
+      const mes = getCurrentMsg.value(currentStore.userId);
+      const recipient = getMsg.value(currentStore.recipientId, currentStore.userId)
+      if (currentStore.error) {
+        currentStore.setError()
+      }
       if (content !== '') {
-        mes.msg.push({time: mes.msg.length, user: currentStore.currentId, m: content});
-        recipient.msg.push({time: mes.msg.length, user: currentStore.currentId, m: content})
+        mes.msg.push({time: mes.msg.length, user: currentStore.userId, m: content});
+        recipient.msg.push({time: mes.msg.length, user: currentStore.userId, m: content})
+      } else {
+        currentStore.setError('Message can not be empty')
       }
     }
 
-    function removeEmpty(currentId) {
-      const currentMessage = getAllMsgs.value(currentId)
-      if (currentMessage.length !== 0) {
-        for (let j = 0; j < currentMessage.length; j++) {
-          if (currentMessage[j].msg.length === 0) {
-            currentMessage.splice(j, 1);
+    function setMsg() {
+      const m = getAllCurrent.value
+      if (currentStore.userId !== -1) {
+        if (m.length === 0) {
+          currentStore.setMsg(currentStore.userId);
+          return;
+        }
+        if (m[0].msg.length !== 0) {
+          currentStore.setMsg(m[0].mid);
+        }
+      }
+    }
+
+    //If user has no active, recipientId is set to his/her userId.
+    function switchConvos(id) {
+      const m = getAllMsgs.value(id)
+      if (m.length !== 0 || currentStore.recipientId === -1) {
+        currentStore.setMsg(m[0].mid);
+      } else {
+        currentStore.setMsg(id);
+      }
+
+    }
+
+    function removeEmpty() {
+      const m = getAllCurrent.value
+      if (m.length !== 0) {
+        for (let j = 0; j < m.length; j++) {
+          if (m[j].msg.length === 0) {
+            m.splice(j, 1);
           }
         }
       }
     }
     
-    return { message, getAllMsgs, getMsg, getCurrentMsg, getAllCurrent, update, enterMsg, removeEmpty}
+    return { message, getAllMsgs, getMsg, getCurrentMsg, switchConvos, setMsg, update, enterMsg, removeEmpty}
   }
 );

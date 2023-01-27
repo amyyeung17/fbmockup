@@ -6,8 +6,8 @@ import { useUserStore } from "@/stores/user";
 import { useCurrentStore } from "@/stores/currentstate";
 import CustomInput from "@/components/reusable/CustomInput.vue";
 import IconButton from '@/components/reusable/IconButton.vue'
-import IconLink from '@/components/reusable/IconLink.vue'
 import Dropdown from '@/components/reusable/Dropdown.vue'
+
 const userStore = useUserStore();
 const currentStore = useCurrentStore();
 const route = useRoute();
@@ -15,6 +15,7 @@ const router = useRouter();
 
 const screenSize = ref(window.innerWidth);
 const throttled = refThrottled(screenSize, 1000)
+
 onMounted(() => {
   window.addEventListener("resize", resize);
 });
@@ -23,8 +24,7 @@ onUnmounted(() => {
   window.removeEventListener("resize", resize);
 });
 
-watch(
-  throttled,
+watch(throttled,
   () => {
     resize();
   },
@@ -42,6 +42,11 @@ const changeUser = (id) => {
 function resize() {
   screenSize.value = window.innerWidth;
   currentStore.setWindowWidth(screenSize);
+}
+
+const exit = () => {
+  currentStore.setUser(-1)
+  router.push('/welcome')
 }
 </script>
 
@@ -63,14 +68,14 @@ function resize() {
     >
       Search
     </CustomInput>
-    <h5 class=" m-0" id="welcome-text">Hello {{ userStore.getAllUsernames()[currentStore.currentId]}}!</h5>
+    <h5 class=" m-0" id="welcome-text">Hello {{ userStore.getAllUsernames()[currentStore.userId]}}!</h5>
     <div v-if="992 <= screenSize" class="d-flex align-items-center">
       <Dropdown
         :dropbutton-text="'Select a user'"
         :dropdown-style="'nav-item mx-2'"
         :menu-options="userStore.user.entries()"
         :id-label="'nav-dropdown'"
-        @handle-menu="changeUser"
+        @on-menu-click="changeUser"
       />
       <a class="nav-item nav-link active mx-1" href="https://www.ayeung.me"> Portfolio </a>
       <RouterLink class="nav-item nav-link active mx-1" :to="'/welcome'" @click="currentStore.setUser(-1);"> Log out </RouterLink>
@@ -96,7 +101,7 @@ function resize() {
           :dropdown-style="'dropstart'"
           :id-label="'sm-nav-dropdown-inner'"
           :menu-options="userStore.user.entries()"
-          @handle-menu="changeUser"
+          @on-menu-click="changeUser"
         />
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" href="https://www.ayeung.me"> Portfolio </a>

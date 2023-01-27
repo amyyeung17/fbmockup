@@ -32,6 +32,11 @@ const router = createRouter({
     {
       path: "/",
       redirect: "/welcome",
+    }, 
+    {
+      path: "/:noPage(.*)",
+      name: "notfound",
+      component: () => import("../components/other/NotFound.vue"),
     }
   ],
 });

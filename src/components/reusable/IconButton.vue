@@ -25,7 +25,24 @@
       default: {}
     }
   })
-const emit = defineEmits(['handle-click'])
+const emit = defineEmits(['on-click'])
+</script>
+
+<script>
+/**
+ * @vue-prop {string} [iconClass = ''] - type of icon used in the button
+ * @vue-prop {string} [buttonColor = 'btn-outline-primary'] - color of the button
+ * @vue-prop {string} [buttonId = ''] - id for the button
+ * @vue-prop {string} [buttonStyle = ''] - additional style classes to apply
+ * @vue-prop {boolean} [disabledStat = false] - condition which the button is disabled
+ * @vue-prop {Object} [extraAttrs = {}] - any extra attributes that are not defined 
+ * 
+ * @vue-event {...} onClick - general callback
+ */
+
+export default {
+  name: 'IconButton'
+}
 </script>
 
 <template>
@@ -36,9 +53,9 @@ const emit = defineEmits(['handle-click'])
     :id="buttonId"
     type="button"
     v-bind="extraAttrs"
-    @click="emit('handle-click')"
+    @click="emit('on-click')"
   > 
-    <i :class="'bi bi-' + iconClass + ' icon mx-1 fs-5'"></i>
+    <span :class="'bi bi-' + iconClass + ' icon mx-1 fs-5'"></span>
     <slot> </slot>
   </button>
 </template>

@@ -1,15 +1,33 @@
 <script setup>
 import { RouterLink } from 'vue-router'
+
 const props = defineProps({
-  usernames: Object,
-  userFriends: Array,
+  usernames: {
+    type: Object
+  },
+  userFriends: {
+    type: Array
+  },
   restTab: {
     type: String
   }
 });
 
 const emit = defineEmits(['on-reset'])
+</script>
 
+<script>
+/**
+ * @vue-prop {Object} usernames - user ids as keys and associated their associated username
+ * @vue-prop {Array} userFriends - all of the current user's friends
+ * @vue-prop {string} restTab - applied style classes 
+ * 
+ * @vue-event {undefined} onReset - resets the classes for the tabs 
+ */
+
+export default {
+  name: 'FriendsTab'
+}
 </script>
 
 <template>
@@ -25,7 +43,7 @@ const emit = defineEmits(['on-reset'])
         v-for="(f, index) of userFriends"
         :key="f"
       >
-        <i class="bi bi-person align-self-center profile__icon_small"></i>
+        <span class="bi bi-person align-self-center profile__icon_small"></span>
         <div class="card-body d-flex justify-content-center p-1 my-1">
           <RouterLink 
             type="button" 
@@ -41,7 +59,7 @@ const emit = defineEmits(['on-reset'])
   </div>
 </template>
 
-<style>
+<style scoped>
 #friend-profile {
   width: 35%;
   height: 40%;

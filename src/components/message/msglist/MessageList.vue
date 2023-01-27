@@ -1,49 +1,57 @@
-<script>
-export default {
-  inheritAttrs: false
-}
-</script>
-
 <script setup>
 import { computed, ref, watch, useAttrs } from "vue";
-import CustomInput from "../../reusable/CustomInput.vue";
+
 import FriendsButton from './FriendsButton.vue'
 import Options from "./Options.vue";
 import Preview from "./Preview.vue";
 
-/**
- * displayFriends - controls display of messages or friend options 
- * previewList - list of active conversations
- */
 const attrs = useAttrs()
 const displayFriends = ref(false);
 const smallDisplay = ref('none')
+
 const props = defineProps({
   previewList: {
     type: Array
   }, 
-  buttonBreakpoint: {
-    type: Boolean
-  },
-  mdBreakpoint: {
-    type: Boolean
+ 
+  windowWidth: {
+    type: Number 
   }
 })
 
-watch(() => props.mdBreakpoint, () => {
-  if (props.mdBreakpoint) {
+const smBreakpoint = computed(() => {
+  return props.windowWidth >= 576
+})
+
+const buttonBreakpoint = computed(() => {
+  return props.windowWidth >= 615
+})
+
+//if window width >= 576, resets 
+watch(() => smBreakpoint, () => {
+  if (smBreakpoint.value) {
     smallDisplay.value = 'none'
   }
 })
 
+watch(() => props.previewList, () => {
+  displayFriends.value = false
+  smallDisplay.value = 'none'
+})
+
 //Adds a new conversation to the message store & shows list of active messages again 
 const createNewConvo = (id) => {
-  attrs.onHandleNew(id)
+  attrs.onSelectFriend(id)
   displayFriends.value = !displayFriends.value;
 }
 
-const handleSmallDisplay = (type) => {
-  if (props.mdBreakpoint) {
+/**
+ * Handles what is being displayed at different breakpoints 
+ * If smBreakpoint, displayFriends will show a friends list when true and preview of messages otherwise. 
+ * Else, it sets smallDisplay to the appropriate option and display. If an option is selected, swithc
+ */
+const handleDisplay = (type) => {
+  if (smBreakpoint.value) {
     displayFriends.value = !displayFriends.value;
   } else {
     smallDisplay.value = (smallDisplay.value === 'none' ? type : 'none')
@@ -52,7 +60,7 @@ const handleSmallDisplay = (type) => {
 
 const buttonText = computed(() => {
   return(
-    props.buttonBreakpoint ?
+    buttonBreakpoint.value ?
       (displayFriends.value ? 'Cancel' : 'Start a new convo')
     :
       (smallDisplay.value === 'friends' ? 'Cancel' : 'New Convos')
@@ -61,16 +69,44 @@ const buttonText = computed(() => {
 
 </script>
 
+<script>
+/**
+ * Fallthrough attributes of @select-friend and usernames (Object) are passed to Preview.
+ * Fallthrough attribute of user is passed to FriendsButton.
+ * 
+ * @vue-prop {Array} previewList - all of the current user's convos 
+ * @vue-prop {Number} windowWidth - current width of window
+ * 
+ * @vue-data {boolean} displayFriends - if smBreakpoint is true, alternates whether Preview or FriendsButton is displayed. 
+ * @vue-data {('none' | 'previews' | 'friends')} [smallDisplay = 'none'] - if smBreakpoint is false, Options will present separate choices for the components mentioned above. 
+ * Only one can be displayed at a time.
+ * 
+ * @vue-computed {boolean} buttonBreakpoint - window width >= 615, responsive design, adjusts some text
+ * @vue-computed {boolean} smBreakpoint - window width >= 576, responsive design
+ * @vue-computed {string} buttonText
+ */
+
+export default {
+  inheritAttrs: false,
+  name: 'MessageList'
+}
+</script>
+
 <template>
   <h2 class="display-6 m-2">Messages</h2>
-  <Options :button-text="buttonText" :md-breakpoint="mdBreakpoint" :small-display="smallDisplay" @on-small-display="handleSmallDisplay" />
+  <Options 
+    :button-text="buttonText" 
+    :sm-breakpoint="smBreakpoint" 
+    :small-display="smallDisplay" 
+    @on-display="handleDisplay" 
+  />
   <Preview
-    v-if="((!displayFriends && mdBreakpoint) || (!mdBreakpoint && smallDisplay === 'previews'))"
+    v-if="((!displayFriends && smBreakpoint) || (!smBreakpoint && smallDisplay === 'previews'))"
     :preview-list="previewList"
     v-bind="$attrs"
   />
   <FriendsButton 
-    v-if="((displayFriends && mdBreakpoint) || (!mdBreakpoint && smallDisplay === 'friends'))" 
+    v-if="((displayFriends && smBreakpoint) || (!smBreakpoint && smallDisplay === 'friends'))" 
     v-bind="$attrs" 
     @on-create-convo="createNewConvo" 
   />

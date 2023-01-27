@@ -1,18 +1,15 @@
 <script setup>
-import { nextTick, ref, watch } from "vue";
-import { RouterLink, useRoute } from "vue-router";
+import { nextTick, computed, ref, watch } from "vue";
+import { useRoute } from "vue-router";
 import { useCurrentStore } from "@/stores/currentstate";
 import { useUserStore } from "@/stores/user";
 import { usePostStore } from "@/stores/post";
 import { useCommentStore } from "@/stores/comment";
-
-import Reply from './Reply.vue'
 import Comment from "./Comment.vue";
 import Options from "./Options.vue";
 import PostBody from './PostBody.vue'
 import PostHeader from './PostHeader.vue'
-import CustomInput from "@/components/reusable/CustomInput.vue";
-import IconButton from "@/components/reusable/IconButton.vue";
+import Reply from './Reply.vue'
 
 const route = useRoute();
 const currentStore = useCurrentStore();
@@ -26,83 +23,98 @@ const replyComment = ref('');
 const props = defineProps({
   p: {
     type: Object
+  },
+  usernames: {
+    type: Object
   }
 })
 
-watch([route, () => currentStore.currentId], () => {
+//If path location or current user changes, reset the inputs and current post number. 
+watch([route, () => currentStore.userId], () => {
   editPost.value = '';
   replyComment.value = '';
   currentStore.setPost(-2)
 });
 
-
+//enter the new comment and resets the input 
 const enterReply = (pid) => {
   commentStore.enterReply(pid, replyComment.value);
   replyComment.value = '';
 }
 
+//updates the post and resets the input
 const enterPost = (type) => {
   postStore.enterPost(editPost.value, type);
   editPost.value = ''
 }
 
+//sets the posts edit mode and the input to its current content
 const updateContentText = (pid) => {
   postStore.setEdit(pid)
   nextTick(() => {
-    const p = postStore.getPost(pid)
-    if (p.edit) {
-      editPost.value = p.content;
-    }
+    editPost.value = postStore.getPost(pid).content; 
   })
 }
 
-const getReplyLabel = (user) => {
-  let currentUser = usernames[user]
+const getReplyLabel = computed(() => {
+  let currentUsername = usernames[currentStore.userId]
   if (currentStore.windowWidth < 900) {
-    currentUser = usernames[user].split(" ")[0];
+    currentUsername = currentUsername.split(' ')[0];
   }
-  if (usernames[user].length > 12) {
-    let u = usernames[user].split(" ");
-    currentUser = u[0] + " " + u[1][0];
+  if (currentUsername.length > 12) {
+    const u = currentUsername.split(' ');
+    currentUsername = `${u[0]} ${u[1][0]}`;
   }
-  return currentUser + ':'
-}
+  return `${currentUsername}:`
+})
+</script>
+
+<script>
+/**
+ * @vue-prop {Object} p - post 
+ *  @vue-prop {Object} usernames -  user ids as keys and associated their associated username
+ * 
+ * @vue-computed {string} getReplyLabel - adjusts the label for the comment input based on available space 
+ */
+
+ export default {
+   name: 'Post'
+ }
 </script>
 
 <template>
   <div class="post-container card m-2">
-  <PostHeader 
-    :current-id="currentStore.currentId"
-    :post="p" 
-    :usernames="usernames"
-    @update-content-text="updateContentText"
-  />
-  <PostBody
-    :edit-post="editPost" 
-    :post="p"
-    :usernames="usernames"
-    v-model="editPost"
-    @enter-post="enterPost"
-  />
-  <Options
-    :guest-stat="currentStore.currentId === -1"
-    :post="p"
-    :post-comments="commentStore.getComments(p.pid)"
-    :post-likes="postStore.getCurrentLikes(p.pid) !== -1 ? '-fill' : ''"
-    @set-display="commentStore.setDisplay"
-    @set-input-display="commentStore.setReply"
-    @set-likes="postStore.addLikes"
-  />
-  <Comment 
-    :post-comments="commentStore.getComments(p.pid)"
-    :usernames="usernames"
-  />
-  <Reply 
-    :current-username="getReplyLabel(currentStore.currentId)"
-    :post="p"
-    v-model="replyComment"
-    @enter-reply="enterReply"
-  />
+    <PostHeader 
+      :current-id="currentStore.userId"
+      :post="p" 
+      :usernames="usernames"
+      @update-content-text="updateContentText"
+    />
+    <PostBody
+      :post="p"
+      :usernames="usernames"
+      v-model="editPost"
+      @enter-post="enterPost"
+    />
+    <Options
+      :guest-stat="currentStore.userId === -1"
+      :post-pid="p.pid"
+      :post-comments="commentStore.getComments(p.pid)"
+      :post-likes="postStore.getCurrentLikes(p.pid) !== -1"
+      @set-display="commentStore.setDisplay"
+      @set-input-display="commentStore.setReply"
+      @set-likes="postStore.addLikes"
+    />
+    <Comment 
+      :post-comments="commentStore.getComments(p.pid)"
+      :usernames="usernames"
+    />
+    <Reply 
+      :current-username="getReplyLabel"
+      :post-pid="p.pid"
+      v-model="replyComment"
+      @enter-reply="enterReply"
+    />
   </div>
 </template>
 

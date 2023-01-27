@@ -90,12 +90,14 @@ export const useCommentStore = defineStore({
     },
     enterReply(pid, r) {
       const c = this.getComments(pid);
-      const current = useCurrentStore();
-      c.comments.push({ id: current.currentId, c: r });
-      c.reply = !c.reply
-      if (c.comments.length > 3) {
-        c.display = true
+      const currentStore = useCurrentStore();
+      if (r.length !== 0) {
+        c.comments.push({ id: currentStore.userId, c: r });
+        if (c.comments.length > 3) {
+          c.display = true
+        }
       }
+      c.reply = !c.reply
     },
     update(length) {
       this.comment.push({pid: length, display: false, reply: false, comments: []});

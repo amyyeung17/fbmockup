@@ -15,7 +15,7 @@ defineProps({
     default: {}
   },
   linkStyle: {
-    type: [String, Array],
+    type: String,
     default: 'link-primary text-decoration-none'
   },
   toLocation: {
@@ -24,7 +24,23 @@ defineProps({
   }
 })
 
-const emit = defineEmits(['handle-click'])
+const emit = defineEmits(['on-link-click'])
+</script>
+
+<script>
+/**
+ * @vue-prop {string} [iconClass = ''] - type of icon used in the link
+ * @vue-prop {boolean} [disabledStat = false] - condition which the link is disabled
+ * @vue-prop {Object} [extraAttrs = {}] - any extra attributes that are not defined 
+ * @vue-prop {string} [linkStyle = 'link-primary text-decoration-none'] - additional style classes to apply
+ * @vue-prop {(Object | string)} [toLocation = '#'] - where to navigate (:to binding in RouterLink)
+ * 
+ * @vue-event {} onLinkClick - general callback
+ */
+
+ export default {
+   name: 'IconLink'
+ }
 </script>
 
 <template>
@@ -32,9 +48,9 @@ const emit = defineEmits(['handle-click'])
     :to="toLocation"
     :class="`my-2 fs-5 ${linkStyle}`"
     v-bind="extraAttrs"
-    @click="emit('handle-click')"
+    @click="emit('on-link-click')"
   >
-    <i v-if="iconClass !== ''" :class="'bi bi-' + iconClass + ' mx-2 fs-5'"></i>
+    <span v-if="iconClass !== ''" :class="'bi bi-' + iconClass + ' mx-2 fs-5'"></span>
     <slot> </slot>
   </RouterLink>
 </template>

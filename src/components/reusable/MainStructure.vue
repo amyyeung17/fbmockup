@@ -1,5 +1,6 @@
 <script setup>
 import { computed } from 'vue'
+
 const props = defineProps({
   page: {
     type: String
@@ -36,6 +37,19 @@ const rightStyle = computed(() => {
   }
 })
 </script>
+ 
+ <script>
+ /**
+  * @vue-prop {string} page - defines which the type of classes are being returned in the computed values
+  * 
+  * @vue-computed {string} leftStyle - number of columns to span, if any, of the left column
+  * @vue-computed {string} midStyle - number of columns to span, if any, or the middle column
+  * @vue-computed {string} rightStyle - number of columns to span, if any, or the right column
+  */
+ export default {
+   name: 'MainStructure'
+ }
+ </script>
 
 <template>
   <div class="row w-100"> 

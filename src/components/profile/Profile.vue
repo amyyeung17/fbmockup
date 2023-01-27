@@ -7,28 +7,26 @@ import { useCurrentStore } from "@/stores/currentstate";
 import Banner from './Banner.vue'
 import LargeProfile from "./largeprofile/LargeProfile.vue";
 import SmallProfile from "./smallprofile/SmallProfile.vue";
-import Post from "@/components/allposts/post/Post.vue";
-import IconButton from '@/components/reusable/IconButton.vue'
-import Dropdown from '@/components/reusable/Dropdown.vue'
 
 const userStore = useUserStore();
 const currentStore = useCurrentStore();
 const route = useRoute();
 const usernames = userStore.getAllUsernames()
+
+//When navigating to a new page, reset the scroll.
 onMounted(() => {
   window.scrollTo({ behavior: "instant", top: 0 });
 });
-
 </script>
 
 <template>
   <div class="col">
     <div class="bg-secondary w-100" id="profile-cover"> </div>
     <Banner
-      :current-user="parseInt(route.params.id) !== currentStore.currentId && currentStore.currentId !== -1"
-      :current-username = "usernames[route.params.id]"
-      :friend-stat="userStore.getUser(route.params.id).friends.indexOf(currentStore.currentId) !== -1"
-      @edit-friends="userStore.editFriends(route.params.id, currentStore.currentId)"
+      :current-user="parseInt(route.params.id) !== currentStore.userId && currentStore.userId !== -1"
+      :profile-username = "usernames[route.params.id]"
+      :friend-stat="userStore.getUser(route.params.id).friends.indexOf(currentStore.userId) !== -1"
+      @edit-friends="userStore.editFriends(route.params.id, currentStore.userId)"
     />
     <LargeProfile
       v-if="currentStore.getWindow"

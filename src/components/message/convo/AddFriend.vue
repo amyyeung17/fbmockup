@@ -3,15 +3,23 @@ import { RouterLink } from "vue-router";
 import IconButton from '../../reusable/IconButton.vue'
 import Dropdown from '../../reusable/Dropdown.vue'
 
-/**
- * Component - Several options, mainly for display purposes.
- */
-
 defineProps({
   recipient: Number,
   windowSize: Boolean,
   currentUsername: String
 })
+</script>
+
+<script>
+/**
+ * @vue-prop {number} recipient - user id of the current message's recipient 
+ * @vue-prop {boolean} windowSize - if window.width > 991
+ * @vue-prop {string} currentUsername - current user's username
+ */
+
+export default {
+  name: 'AddFriend'
+}
 </script>
 
 <template>

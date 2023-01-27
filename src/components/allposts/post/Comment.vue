@@ -1,5 +1,7 @@
 <script setup>
+import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
+
 const props = defineProps({
   postComments: {
     type: Object
@@ -9,21 +11,33 @@ const props = defineProps({
   }
 });
 
-//Display subset or all comments depending on postComments.display
-const setComments = () => {
+const commentsDisplay = computed(() => {
   return(props.postComments.comments.length > 3 && !props.postComments.display ?
     props.postComments.comments.slice(0, 3)
     :
     props.postComments.comments
   ) 
-}
+})
+</script>
+
+<script>
+/**
+ * @vue-prop {Object} postComments - comments that correspond with postPid
+ * @vue-prop {Object} usernames - user ids as keys and associated their associated username
+ * 
+ * @vue-computed {Array} commentsDisplay - subset or all comments depending on postComments.display (user option)
+ */
+
+ export default {
+   name: 'Comment'
+ }
 </script>
 
 <template>
   <ul class="list-group list-group-flush w-100 flex-grow-1">
     <template v-if="postComments.comments.length !== 0">
       <li
-        v-for="c in setComments()"
+        v-for="c in commentsDisplay"
         :key="c.id"
         class="list-group-item py-3"
       >

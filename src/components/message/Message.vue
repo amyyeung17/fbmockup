@@ -1,13 +1,15 @@
 <script setup>
-import { computed, ref, watch, onMounted } from "vue";
-import { RouterLink, useRoute, useRouter } from "vue-router";
+import {  ref, watch, onMounted, onUnmounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { useCurrentStore } from "@/stores/currentstate";
 import { useUserStore } from "@/stores/user";
 import { useMessageStore } from "@/stores/message";
+
+import Alert from "@/components/reusable/Alert.vue"
 import MessageList from "./msglist/MessageList.vue";
 import MainStructure from "@/components/reusable/MainStructure.vue";
 import Convo from "./convo/Convo.vue";
-import IconButton from '../reusable/IconButton.vue'
+import SideProfile from './SideProfile.vue'
 
 const userStore = useUserStore();
 const currentStore = useCurrentStore();
@@ -15,77 +17,54 @@ const messageStore = useMessageStore();
 const route = useRoute();
 const router = useRouter()
 const usernames = userStore.getAllUsernames()
-const currentConvo = ref([])
 
-/**
- * When going to the url directly
- */
+const userAlert = ref(false)
+
+//When going to the url directly and there is no user signed in.
 onMounted(() => {
-  if (currentStore.currentId === -1) {
+  if (currentStore.userId === -1) {
     router.push('/home')
   }
 })
-/**
- * Updates currently displaed message's recipient (currentStore.currentMsg) when navigating
- * If user has no messages, the value is set to the current user.  
- * */
-
-const updateMessage = () => {
-  currentConvo.value = messageStore.getAllMsgs(route.params.id);
-  if (currentConvo.value.length !== 0 || currentStore.currentMsg === -1) {
-    currentStore.setMsg(currentConvo.value[0].mid);
-  } else {
-    currentStore.setMsg(route.params.id);
+onUnmounted(() => {
+  if (currentStore.error) {
+    currentStore.setError()
   }
-}
+})
 
 /**
  * When route changes, remove unsent messages.
- * If navigating within /message (update by switching current user), call updateMessage
+ * If navigating within /message (ex. switching current userId), updates messages.
 */
 watch(
   route,
   () => {
-    if (currentStore.currentId !== -1 && route.path.includes('message')) {
+    if (currentStore.userId !== -1 && route.path.includes('message')) {
       if (messageStore.getAllMsgs(route.params.id).length !== 0) {
-        messageStore.removeEmpty(currentStore.currentId);
+        messageStore.removeEmpty();
       }
       if (route.path.includes('message')) {
-        updateMessage();
+        messageStore.switchConvos(route.params.id)
+      }
+      if (currentStore.error) {
+        currentStore.setError()
       }
     }
   },
   { immediate: true }
 );
+watch(() => currentStore.userId, () =>{
+  userAlert.value = true;
+})
 
-/**
- * Callback function for starting new conversation.
- * If user selects a friend who they have convo history, set the recipient id.
- * Otherwise, add a new conversation. 
- * 
- * TODO - currentStore.setMsg() -> called after if (statement === 1), remove from message.js (?)
- */
-const handleNew = (id) => {
-  const mes = messageStore.getAllCurrent
-  if ([...mes.map(m => m.mid)].indexOf(id) !== -1) {
-    currentStore.setMsg(id)
-  } else {
-    messageStore.update(id);
+const handleAlert = () => {
+  if (currentStore.errorMsg.includes('Message')) {
+    currentStore.setError()
+  }
+  if (userAlert.value) {
+    userAlert.value = false
   }
 }
-
-/**
- * If user is not 'signed in', return empty array during initial mount
- * to allow onMounted hook to proceed. 
- */
-const getCurrentMsgs = computed(() => {
-  return (
-    currentStore.currentId !== -1 ?
-      messageStore.getCurrentMsg(route.params.id)
-    : 
-      []
-  )
-})
 
 </script>
 
@@ -94,18 +73,29 @@ const getCurrentMsgs = computed(() => {
     <template #left> 
       <MessageList
         :preview-list="messageStore.getAllMsgs(route.params.id)"
+        :recipient="currentStore.recipientId"
         :user="userStore.getCurrentUser()"
         :usernames="usernames"
-        :md-breakpoint="currentStore.windowWidth >= 576"
-        :button-breakpoint="currentStore.windowWidth >= 615"
-        @handle-new="handleNew"
-        @select-friend="currentStore.setMsg"
+        :window-width="currentStore.windowWidth"
+        @select-friend="messageStore.update"
       />
     </template>
     <template #middle> 
+      <Alert @handle-alert="handleAlert" :condition="currentStore.error || userAlert" :alert-style="userAlert ? 'alert-success' : 'alert-warning'">
+        <template #msg>
+          <template v-if="currentStore.error"> 
+            <strong> Whoops! </strong>
+            {{ currentStore.errorMsg }} 
+          </template>
+          <template v-else>
+            <strong> Success! </strong>
+            Signed in as <strong>{{usernames[currentStore.userId]}}</strong>.
+          </template>
+        </template>
+      </Alert>
       <Convo
-        :convo-items="getCurrentMsgs" 
-        :current-msg="currentStore.currentMsg"
+        :convo-items="messageStore.getCurrentMsg(route.params.id)" 
+        :recipient="currentStore.recipientId"
         :usernames="usernames"
         :window-size="currentStore.getWindow"
         @send-msg="messageStore.enterMsg"
@@ -113,35 +103,20 @@ const getCurrentMsgs = computed(() => {
     </template>
     <template #right>
       <template id="optional-buttons"> 
-        <h3 class="text-center m-2"> {{ usernames[currentStore.currentMsg] }} </h3>
-        <i class="bi bi-person-circle profile-pic" id="iconpic"></i>
-        <RouterLink
-          class="list-group-item list-group-item-action p-2"
-          :to="{name: 'profile', params: { id: currentStore.currentMsg }}"
-        >
-          Profile
-        </RouterLink>
-        <button
-          class="list-group-item list-group-item-action disabled p-2"
-          disabled
-          aria-disabled="true"
-          v-for="[index, text] of ['Photos', 'Options', 'Settings'].entries()"
-          :key="index"
-        >
-          {{ text }}
-        </button>
-      </template>
+        <SideProfile 
+          :recipient="currentStore.recipientId" 
+          :recipientName="usernames[currentStore.recipientId]" 
+        />
+        </template>
     </template>
   </MainStructure>
 </template>
 
 <style lang="scss" scoped>
-#iconpic {
-  font-size: 5rem
-}
 #optional-buttons {
   display: none;
 }
+
 @include media-breakpoint-up(lg) { 
   #optional-buttons {
     align-items: center;

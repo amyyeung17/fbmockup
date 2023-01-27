@@ -1,28 +1,38 @@
 <script setup>
-//Component - shows options of current active messages 
-
-/**
- * previewList - list of active conversations 
- * usernames - fallthrough attributes, list of associated ids and usernames
- */
 defineProps({
   previewList: {
     type: Array
   }, 
   usernames: {
     type: Object
+  },
+  recipient: {
+    type: Number 
   }
 })
 
 const emit = defineEmits(['select-friend'])
 </script>
 
+<script>
+/**
+ * @vue-prop {Array} previewList - all of the current user's convos 
+ * @vue-prop {Object} usernames - user ids as keys and associated their associated username
+ * 
+ * @vue-event {number} selectFriend - changes the conversation being displayed
+ */
+
+export default {
+  name: 'Preview'
+}
+</script>
+
 <template>
   <div v-if="previewList.length !== 0" class="list-group w-100 mt-3">
     <a
-      class="list-group-item list-group-item-action"
       role="button"
       v-for="m of previewList"
+      :class="`list-group-item list-group-item-action ${recipient === m.mid ? 'selected' : 'normal'}`"
       :key="m.mid"
       @click="emit('select-friend', m.mid)"
     >
@@ -38,10 +48,20 @@ const emit = defineEmits(['select-friend'])
   <p v-else class="text-secondary fs-4 my-4"> No active convos </p>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 #msg-preview-text {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.normal {
+  &:hover {
+    background-color: $gray-200;
+  }
+}
+
+.selected {
+  background-color: $gray-300
 }
 </style>
