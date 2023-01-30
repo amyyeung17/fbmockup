@@ -1,27 +1,36 @@
 <script setup>
-import { watch, onMounted } from 'vue'
+import { onMounted } from "vue";
 import { RouterView, useRoute, useRouter } from "vue-router";
-import IconButton from '@/components/reusable/IconButton.vue'
+import IconButton from "@/components/reusable/IconButton.vue";
 import NavBar from "@/components/other/NavBar.vue";
 // max-width: 65rem;
 const route = useRoute();
-const router = useRouter()
+const router = useRouter();
 
 function scrollBack() {
   window.scrollTo({ behavior: "smooth", top: 0 });
 }
 
 onMounted(() => {
-  const currentPath = window.location.href.split('/')
-  if ((window.location.href.includes('message') || (window.location.href.includes('profile'))) && (parseInt(currentPath[currentPath.length - 1]) > 9)) {
-    router.push('/error')
+  const currentPath = window.location.href.split("/");
+  if (
+    (window.location.href.includes("message") ||
+      window.location.href.includes("profile")) &&
+    parseInt(currentPath[currentPath.length - 1]) > 9
+  ) {
+    router.push("/error");
   }
-})
-
+});
 </script>
 
 <template>
-  <NavBar v-if="!route.path.includes('welcome') && !route.path.includes('info') && !route.path.includes('error')" />
+  <NavBar
+    v-if="
+      !route.path.includes('welcome') &&
+      !route.path.includes('info') &&
+      !route.path.includes('error')
+    "
+  />
   <div class="container-md d-flex justify-content-center">
     <RouterView></RouterView>
     <IconButton
@@ -41,14 +50,14 @@ onMounted(() => {
 @include media-breakpoint-only(xs) {
   #nav-up-icon {
     height: 2.75rem !important;
-    right: .5rem;
+    right: 0.5rem;
     top: 92.5%;
   }
 }
 
 @include media-breakpoint-up(sm) {
   #nav-up-icon {
-    border-radius: .25rem !important;
+    border-radius: 0.25rem !important;
   }
 }
 
@@ -65,6 +74,4 @@ onMounted(() => {
     top: 92.5%;
   }
 }
-
-
 </style>

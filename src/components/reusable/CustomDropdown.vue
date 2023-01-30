@@ -1,34 +1,32 @@
 <script setup>
-import { RouterLink } from 'vue-router'
-
-const props = defineProps({
+defineProps({
   dropdownStyle: {
     type: String,
-    default: ''
+    default: "",
   },
   menuOptions: {
     type: Object,
-    default: {}
+    default: () => ({}),
   },
   menuStyle: {
     type: String,
-    default: ''
+    default: "",
   },
   idLabel: {
     type: String,
-    default: ''
+    default: "",
   },
   dropbuttonText: {
     type: String,
-    default: ''
+    default: "",
   },
   dropbuttonStyle: {
     type: String,
-    default: 'nav-link dropdown-toggle border-0'
+    default: "nav-link dropdown-toggle border-0",
   },
-})
+});
 
-const emit = defineEmits(['on-drop-click', 'on-menu-click'])
+const emit = defineEmits(["on-drop-click", "on-menu-click"]);
 </script>
 
 <script>
@@ -36,17 +34,17 @@ const emit = defineEmits(['on-drop-click', 'on-menu-click'])
  * @vue-prop {string} [dropdownStyle = ''] - style classes applied to the most outer div
  * @vue-prop {Object} [menuOptions = {}] - list of availble options to display in dropdown
  * @vue-prop {string} [menuStyle = ''] - style classes applied to the actual dropdrown div
- * @vue-prop {string} [idLabel = ''] - id for the button and to label the targeted dropdown div 
- * @vue-prop {string} [dropbuttonText = ''] - button text if using the default button type 
+ * @vue-prop {string} [idLabel = ''] - id for the button and to label the targeted dropdown div
+ * @vue-prop {string} [dropbuttonText = ''] - button text if using the default button type
  * @vue-prop {string} [dropbuttonStyle = 'nav-link dropdown-toggle border-0']
- * 
+ *
  * @vue-event {number} onDropClick - callback that requires an argument
  * @vue-event {} onMenuClick - general callback with no arguments
  */
 
 export default {
-  name: 'Dropdown'
-}
+  name: "CustomDropdown",
+};
 </script>
 
 <template>
@@ -63,11 +61,7 @@ export default {
         {{ dropbuttonText }}
       </button>
     </slot>
-    <div 
-      class="dropdown-menu"
-      :class="menuStyle" 
-      :aria-labelledby="idLabel"
-    >
+    <div class="dropdown-menu" :class="menuStyle" :aria-labelledby="idLabel">
       <slot name="extra"> </slot>
       <slot name="menu">
         <button
@@ -76,12 +70,15 @@ export default {
           v-for="[index, info] of menuOptions"
           :key="index"
           type="button"
-          v-on="idLabel.includes('nav-dropdown') ? {click: () => emit('on-menu-click', info.id)} : {click: () => emit('on-menu-click')}"
+          v-on="
+            idLabel.includes('nav-dropdown')
+              ? { click: () => emit('on-menu-click', info.id) }
+              : { click: () => emit('on-menu-click') }
+          "
         >
-          {{idLabel.includes('nav-dropdown') ? info.name : info }}
+          {{ idLabel.includes("nav-dropdown") ? info.name : info }}
         </button>
       </slot>
-    </div>  
+    </div>
   </div>
-
 </template>

@@ -75,18 +75,18 @@ export const useCommentStore = defineStore({
   getters: {
     getComments: (state) => {
       return (pid) => {
-        return state.comment.find(ele => ele.pid === pid)
+        return state.comment.find((ele) => ele.pid === pid);
       };
-    }
+    },
   },
   actions: {
     setDisplay(pid) {
-      const c = this.getComments(pid)
-      c.display = !c.display
+      const c = this.getComments(pid);
+      c.display = !c.display;
     },
     setReply(pid) {
-      const c = this.getComments(pid)
-      c.reply = !c.reply
+      const c = this.getComments(pid);
+      c.reply = !c.reply;
     },
     enterReply(pid, r) {
       const c = this.getComments(pid);
@@ -94,13 +94,18 @@ export const useCommentStore = defineStore({
       if (r.length !== 0) {
         c.comments.push({ id: currentStore.userId, c: r });
         if (c.comments.length > 3) {
-          c.display = true
+          c.display = true;
         }
       }
-      c.reply = !c.reply
+      c.reply = !c.reply;
     },
     update(length) {
-      this.comment.push({pid: length, display: false, reply: false, comments: []});
+      this.comment.push({
+        pid: length,
+        display: false,
+        reply: false,
+        comments: [],
+      });
     },
   },
 });

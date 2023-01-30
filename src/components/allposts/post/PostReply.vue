@@ -1,34 +1,32 @@
-
-
 <script setup>
 import CustomInput from "@/components/reusable/CustomInput.vue";
 import IconButton from "@/components/reusable/IconButton.vue";
 
 defineProps({
   currentUsername: {
-    type: String
+    type: String,
   },
   postPid: {
-    type: Number
-  }
-})
+    type: Number,
+  },
+});
 
-const emit = defineEmits(['enter-reply'])
+const emit = defineEmits(["enter-reply"]);
 </script>
 
 <script>
 /**
  * Fallthrough attributes of v-model (modelValue & @update:modelValue) are passed to CustomInput.
- * 
+ *
  * @vue-prop {string} currentUsername - current user's username
  * @vue-prop {Object} postPid - current post's pid (identifier)
- * 
+ *
  * @vue-event {Number} enterReply - adds new comment to the associated post
  */
 export default {
   inheritAttrs: false,
-  name: 'Reply'
-}
+  name: "PostReply",
+};
 </script>
 
 <template>
@@ -49,8 +47,11 @@ export default {
         <IconButton
           :button-color="'btn-primary'"
           :icon-class="'reply-fill'"
-          :extra-attrs="{'data-bs-toggle': 'collapse', 'data-bs-target': `#collapseinput${postPid}`,
-            'aria-controls': `#collapseinput${postPid}`}"
+          :extra-attrs="{
+            'data-bs-toggle': 'collapse',
+            'data-bs-target': `#collapseinput${postPid}`,
+            'aria-controls': `#collapseinput${postPid}`,
+          }"
           @on-click="emit('enter-reply', postPid)"
         />
       </template>

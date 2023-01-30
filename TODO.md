@@ -67,7 +67,7 @@ Small personal project created to learn and practice Vue. Limited implementation
 ## Update - 1/14/23
 - Fixed log out button in dropdown menu for smaller screen sizes
 - Modified sign in alert so it appears whenever a new user is being signed in, regardless of whether alert has been manually closed or not 
-  - Alert appears in message page too now.
+  - CustomAlert appears in message page too now.
 - Fixed alert error so same errors (ex. pressing send on an empty message repeatedly) will not close alert until either the error has been resolved or manually closed. 
 
 

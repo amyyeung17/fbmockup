@@ -3,10 +3,9 @@ import AllPosts from "@/components/allposts/AllPosts.vue";
 
 defineProps({
   firstTab: {
-    type: String
-  }
+    type: String,
+  },
 });
-
 </script>
 
 <script>
@@ -15,8 +14,8 @@ defineProps({
  */
 
 export default {
-  name: 'PostTab'
-}
+  name: "PostTab",
+};
 </script>
 
 <template>
@@ -26,6 +25,5 @@ export default {
     id="postTab"
   >
     <AllPosts />
-  </div>   
+  </div>
 </template>
-

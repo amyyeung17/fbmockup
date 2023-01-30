@@ -1,7 +1,7 @@
 <script setup>
 import AllPosts from "@/components/allposts/AllPosts.vue";
-import FriendsList from './FriendsList.vue'
-import ProfileInfo from './ProfileInfo.vue'
+import FriendsList from "./FriendsList.vue";
+import ProfileInfo from "./ProfileInfo.vue";
 import MainStructure from "@/components/reusable/MainStructure.vue";
 </script>
 
@@ -13,16 +13,16 @@ import MainStructure from "@/components/reusable/MainStructure.vue";
 
 export default {
   inheritAttrs: false,
-  name: 'LargeProfile'
-}
+  name: "LargeProfile",
+};
 </script>
 
 <template>
   <MainStructure :page="'profile'">
     <template #left>
       <ProfileInfo v-bind="$attrs" />
-      <FriendsList v-bind="$attrs"/>
-    </template> 
+      <FriendsList v-bind="$attrs" />
+    </template>
     <template #middle>
       <AllPosts />
     </template>

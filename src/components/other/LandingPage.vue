@@ -1,24 +1,25 @@
 <script setup>
-import { ref } from "vue";
 import { RouterLink } from "vue-router";
 
-import Alert from "@/components/reusable/Alert.vue";
+import CustomAlert from "@/components/reusable/CustomAlert.vue";
 import CustomInput from "@/components/reusable/CustomInput.vue";
-import IconLink from '@/components/reusable/IconLink.vue'
-
+import IconLink from "@/components/reusable/IconLink.vue";
 </script>
 
 <template>
-  <div class="d-flex flex-column align-items-center justify-content-center" id="landing-container">
-    <div class="w-75 land-alert"> 
-      <Alert :condition="true" :alert-style="'alert-info land-box'">
+  <div
+    class="d-flex flex-column align-items-center justify-content-center"
+    id="landing-container"
+  >
+    <div class="w-75 land-alert">
+      <CustomAlert :condition="true" :alert-style="'alert-info land-box'">
         <template #msg>
           For demo purposes, username and password are not required to enter.
         </template>
-      </Alert>
+      </CustomAlert>
     </div>
     <h1 class="display-3 text-primary">Fakebook</h1>
-    <div class="w-50 sign"> 
+    <div class="w-50 sign">
       <CustomInput
         :form-class="'form-floating w-75 mx-2 my-3'"
         :input-class="'form-control w-100'"
@@ -47,12 +48,12 @@ import IconLink from '@/components/reusable/IconLink.vue'
     </RouterLink>
     <a href="#" class="nav-link m-2 disabled"> Create Account </a>
     <a href="#" class="nav-link m-2 disabled"> Forget Password </a>
-    <IconLink 
+    <IconLink
       :icon-class="'info fs-5'"
       :toLocation="'/info'"
       :link-style="'btn btn-outline-primary p-0'"
     />
-    <a class="link-primary p-2 m-2" href="https://www.ayeung.me"> 
+    <a class="link-primary p-2 m-2" href="https://www.ayeung.me">
       <span class="bi bi-arrow-left"></span>
       Back to portfolio
     </a>

@@ -1,33 +1,33 @@
 <script setup>
-import { RouterLink } from 'vue-router'
+import { RouterLink } from "vue-router";
 
-const props = defineProps({
+defineProps({
   usernames: {
-    type: Object
+    type: Object,
   },
   userFriends: {
-    type: Array
+    type: Array,
   },
   restTab: {
-    type: String
-  }
+    type: String,
+  },
 });
 
-const emit = defineEmits(['on-reset'])
+const emit = defineEmits(["on-reset"]);
 </script>
 
 <script>
 /**
  * @vue-prop {Object} usernames - user ids as keys and associated their associated username
  * @vue-prop {Array} userFriends - all of the current user's friends
- * @vue-prop {string} restTab - applied style classes 
- * 
- * @vue-event {undefined} onReset - resets the classes for the tabs 
+ * @vue-prop {string} restTab - applied style classes
+ *
+ * @vue-event {undefined} onReset - resets the classes for the tabs
  */
 
 export default {
-  name: 'FriendsTab'
-}
+  name: "FriendsTab",
+};
 </script>
 
 <template>
@@ -45,13 +45,13 @@ export default {
       >
         <span class="bi bi-person align-self-center profile__icon_small"></span>
         <div class="card-body d-flex justify-content-center p-1 my-1">
-          <RouterLink 
-            type="button" 
+          <RouterLink
+            type="button"
             class="btn btn-secondary"
-            :to="{ name: 'profile', params: { id: f }}" 
+            :to="{ name: 'profile', params: { id: f } }"
             @click="emit('on-reset')"
           >
-           {{ usernames[index] }}
+            {{ usernames[index] }}
           </RouterLink>
         </div>
       </div>

@@ -1,29 +1,27 @@
 <script setup>
-
 defineProps({
   condition: {
-    type: Boolean
+    type: Boolean,
   },
   alertStyle: {
     type: String,
-    default: 'alert-info'
-  }
+    default: "alert-info",
+  },
 });
 
-const emit = defineEmits(['handle-alert'])
-
+const emit = defineEmits(["handle-alert"]);
 </script>
 
 <script>
 /**
- * @vue-prop {boolean} condition - whether component should appear or not 
- * 
- * @vue-event {undefined} handleError - removes error 
+ * @vue-prop {boolean} condition - whether component should appear or not
+ *
+ * @vue-event {undefined} handleError - removes error
  */
 
 export default {
-  name: 'Alert'
-}
+  name: "CustomAlert",
+};
 </script>
 
 <template>
@@ -39,9 +37,7 @@ export default {
         data-bs-dismiss="alert"
         aria-label="Close"
         @click="emit('handle-alert')"
-      > 
-      </button>
+      ></button>
     </div>
   </template>
 </template>
-

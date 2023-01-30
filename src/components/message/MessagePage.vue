@@ -1,77 +1,79 @@
 <script setup>
-import {  ref, watch, onMounted, onUnmounted } from "vue";
+import { ref, watch, onMounted, onUnmounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useCurrentStore } from "@/stores/currentstate";
 import { useUserStore } from "@/stores/user";
 import { useMessageStore } from "@/stores/message";
 
-import Alert from "@/components/reusable/Alert.vue"
-import MessageList from "./msglist/MessageList.vue";
+import CustomAlert from "@/components/reusable/CustomAlert.vue";
+import MsgListComposite from "./msglist/MsgListComposite.vue";
 import MainStructure from "@/components/reusable/MainStructure.vue";
-import Convo from "./convo/Convo.vue";
-import SideProfile from './SideProfile.vue'
+import ConvoComposite from "./convo/ConvoComposite.vue";
+import SideProfile from "./SideProfile.vue";
 
 const userStore = useUserStore();
 const currentStore = useCurrentStore();
 const messageStore = useMessageStore();
 const route = useRoute();
-const router = useRouter()
-const usernames = userStore.getAllUsernames()
+const router = useRouter();
+const usernames = userStore.getAllUsernames();
 
-const userAlert = ref(false)
+const userAlert = ref(false);
 
 //When going to the url directly and there is no user signed in.
 onMounted(() => {
   if (currentStore.userId === -1) {
-    router.push('/home')
+    router.push("/home");
   }
-})
+});
 onUnmounted(() => {
   if (currentStore.error) {
-    currentStore.setError()
+    currentStore.setError();
   }
-})
+});
 
 /**
  * When route changes, remove unsent messages.
  * If navigating within /message (ex. switching current userId), updates messages.
-*/
+ */
 watch(
   route,
   () => {
-    if (currentStore.userId !== -1 && route.path.includes('message')) {
+    if (currentStore.userId !== -1 && route.path.includes("message")) {
       if (messageStore.getAllMsgs(route.params.id).length !== 0) {
         messageStore.removeEmpty();
       }
-      if (route.path.includes('message')) {
-        messageStore.switchConvos(route.params.id)
+      if (route.path.includes("message")) {
+        messageStore.switchConvos(route.params.id);
       }
       if (currentStore.error) {
-        currentStore.setError()
+        currentStore.setError();
       }
     }
   },
   { immediate: true }
 );
-watch(() => currentStore.userId, () =>{
-  userAlert.value = true;
-})
+watch(
+  () => currentStore.userId,
+  () => {
+    userAlert.value = true;
+  }
+);
 
 const handleAlert = () => {
-  if (currentStore.errorMsg.includes('Message')) {
-    currentStore.setError()
+  if (currentStore.errorMsg.includes("Message")) {
+    currentStore.setError();
   }
   if (userAlert.value) {
-    userAlert.value = false
+    userAlert.value = false;
   }
-}
-
+};
 </script>
 
 <template>
-  <MainStructure :page="'msg'"> 
-    <template #left> 
-      <MessageList
+  <MainStructure :page="'msg'">
+    <template #left>
+      <MsgListComposite
         :preview-list="messageStore.getAllMsgs(route.params.id)"
         :recipient="currentStore.recipientId"
         :user="userStore.getCurrentUser()"
@@ -80,21 +82,26 @@ const handleAlert = () => {
         @select-friend="messageStore.update"
       />
     </template>
-    <template #middle> 
-      <Alert @handle-alert="handleAlert" :condition="currentStore.error || userAlert" :alert-style="userAlert ? 'alert-success' : 'alert-warning'">
+    <template #middle>
+      <CustomAlert
+        @handle-alert="handleAlert"
+        :condition="currentStore.error || userAlert"
+        :alert-style="userAlert ? 'alert-success' : 'alert-warning'"
+      >
         <template #msg>
-          <template v-if="currentStore.error"> 
+          <template v-if="currentStore.error">
             <strong> Whoops! </strong>
-            {{ currentStore.errorMsg }} 
+            {{ currentStore.errorMsg }}
           </template>
           <template v-else>
             <strong> Success! </strong>
-            Signed in as <strong>{{usernames[currentStore.userId]}}</strong>.
+            Signed in as <strong>{{ usernames[currentStore.userId] }}</strong
+            >.
           </template>
         </template>
-      </Alert>
-      <Convo
-        :convo-items="messageStore.getCurrentMsg(route.params.id)" 
+      </CustomAlert>
+      <ConvoComposite
+        :convo-items="messageStore.getCurrentMsg(route.params.id)"
         :recipient="currentStore.recipientId"
         :usernames="usernames"
         :window-size="currentStore.getWindow"
@@ -102,12 +109,12 @@ const handleAlert = () => {
       />
     </template>
     <template #right>
-      <template id="optional-buttons"> 
-        <SideProfile 
-          :recipient="currentStore.recipientId" 
-          :recipientName="usernames[currentStore.recipientId]" 
+      <template id="optional-buttons">
+        <SideProfile
+          :recipient="currentStore.recipientId"
+          :recipientName="usernames[currentStore.recipientId]"
         />
-        </template>
+      </template>
     </template>
   </MainStructure>
 </template>
@@ -117,7 +124,7 @@ const handleAlert = () => {
   display: none;
 }
 
-@include media-breakpoint-up(lg) { 
+@include media-breakpoint-up(lg) {
   #optional-buttons {
     align-items: center;
     display: flex;
@@ -125,5 +132,4 @@ const handleAlert = () => {
     width: 100%;
   }
 }
-
 </style>

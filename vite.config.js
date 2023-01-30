@@ -6,7 +6,7 @@ import vueJsx from "@vitejs/plugin-vue-jsx";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/project3',
+  base: "/project3",
   plugins: [vue(), vueJsx()],
   resolve: {
     alias: {
@@ -20,8 +20,8 @@ export default defineConfig({
           @import "./node_modules/bootstrap/scss/_functions.scss";
           @import "./node_modules/bootstrap/scss/_variables.scss";
           @import "./node_modules/bootstrap/scss/_mixins.scss";
-        `
-      }
+        `,
+      },
     },
     postcss: {
       plugins: [

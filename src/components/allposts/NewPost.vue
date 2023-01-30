@@ -1,38 +1,38 @@
-
-
 <script setup>
-import { ref } from "vue";
 import CustomInput from "@/components/reusable/CustomInput.vue";
-import Alert from "@/components/reusable/Alert.vue"
+import CustomAlert from "@/components/reusable/CustomAlert.vue";
 
 defineProps({
   error: Boolean,
-  errorMessage: String
+  errorMessage: String,
 });
 </script>
 
 <script>
 /**
  * Fallthrough attributes of @send-event, @handle-alert, and v-model (modelValue & @update:modelValue) are passed to CustomInput.
- * 
- * @vue-prop {boolean} error 
- * @vue-prop {string} errorMessage 
+ *
+ * @vue-prop {boolean} error
+ * @vue-prop {string} errorMessage
  */
 
 export default {
   inheritAttrs: false,
-  name: 'NewPost'
-}
+  name: "NewPost",
+};
 </script>
 
-
 <template>
-  <Alert v-bind="$attrs" :condition="error" :alert-style="'alert-warning'">
+  <CustomAlert
+    v-bind="$attrs"
+    :condition="error"
+    :alert-style="'alert-warning'"
+  >
     <template #msg>
       <strong> Whoops! </strong>
-      {{ errorMessage }} 
+      {{ errorMessage }}
     </template>
-  </Alert>
+  </CustomAlert>
   <CustomInput
     :form-class="'input-group w-75 mb-3 newpost'"
     :placeholder-text="'Start typing to create a post...'"
@@ -45,11 +45,9 @@ export default {
 </template>
 
 <style lang="scss">
-
 @include media-breakpoint-down(xs) {
   .newpost {
     width: 90% !important;
   }
-};
-
+} ;
 </style>

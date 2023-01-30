@@ -79,15 +79,15 @@ export const useUserStore = defineStore({
   getters: {
     getUser: (state) => {
       return (id) => {
-        const user = state.user.find(u => u.id === parseInt(id))
-        return (typeof(user) !== 'undefined' ? user : -1)
+        const user = state.user.find((u) => u.id === parseInt(id));
+        return typeof user !== "undefined" ? user : -1;
       };
     },
     getCurrentUser: (state) => {
       return () => {
-        const currentStore = useCurrentStore()
-        return state.getUser(currentStore.userId)
-      }
+        const currentStore = useCurrentStore();
+        return state.getUser(currentStore.userId);
+      };
     },
     getFriends: (state) => {
       return (id) => {
@@ -97,10 +97,13 @@ export const useUserStore = defineStore({
     },
     getAllUsernames: (state) => {
       return () => {
-        const usernames = state.user.reduce((acc, current) => ({...acc, [current.id]: current.name }), {})
-        usernames['-1'] = 'Guest User'
-        return usernames
-      }
+        const usernames = state.user.reduce(
+          (acc, current) => ({ ...acc, [current.id]: current.name }),
+          {}
+        );
+        usernames["-1"] = "Guest User";
+        return usernames;
+      };
     },
   },
   actions: {

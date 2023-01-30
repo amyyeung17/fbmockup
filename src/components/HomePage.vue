@@ -1,7 +1,6 @@
-
 <script setup>
 import FakeAds from "@/components/other/FakeAds.vue";
-import Menus from "@/components/other/Menu.vue";
+import HomeMenu from "@/components/other/HomeMenu.vue";
 import AllPosts from "@/components/allposts/AllPosts.vue";
 import MainStructure from "@/components/reusable/MainStructure.vue";
 </script>
@@ -9,7 +8,7 @@ import MainStructure from "@/components/reusable/MainStructure.vue";
 <template>
   <MainStructure :page="'post'">
     <template #left>
-      <Menus />
+      <HomeMenu />
     </template>
     <template #middle>
       <AllPosts />

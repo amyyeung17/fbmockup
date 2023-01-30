@@ -3,31 +3,31 @@ import { RouterLink } from "vue-router";
 
 defineProps({
   recipient: {
-    type: Number 
+    type: Number,
   },
   recipientName: {
-    type: String
-  }
-})
+    type: String,
+  },
+});
 </script>
 
 <script>
 /**
- * @vue-prop {number} recipient - user id of the current message's recipient 
+ * @vue-prop {number} recipient - user id of the current message's recipient
  * @vue-prop {string} recipientName - name of the recipient
  */
 
 export default {
-  name: 'SideProfile'
-}
+  name: "SideProfile",
+};
 </script>
 
 <template>
-  <h3 class="text-center m-2"> {{ recipientName }} </h3>
+  <h3 class="text-center m-2">{{ recipientName }}</h3>
   <span class="bi bi-person-circle profile-pic" id="iconpic"></span>
   <RouterLink
     class="list-group-item list-group-item-action p-2"
-    :to="{name: 'profile', params: { id: recipient }}"
+    :to="{ name: 'profile', params: { id: recipient } }"
   >
     Profile
   </RouterLink>
@@ -44,6 +44,6 @@ export default {
 
 <style lang="scss" scoped>
 #iconpic {
-  font-size: 5rem
+  font-size: 5rem;
 }
 </style>

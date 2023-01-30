@@ -1,13 +1,13 @@
 <script setup>
-import { RouterLink } from 'vue-router'
+import { RouterLink } from "vue-router";
 
 defineProps({
   user: {
-    type: Object
+    type: Object,
   },
   usernames: {
-    type: Object
-  }
+    type: Object,
+  },
 });
 </script>
 
@@ -18,19 +18,22 @@ defineProps({
  */
 
 export default {
-  name: 'FriendsList'
-}
+  name: "FriendsList",
+};
 </script>
 
 <template>
-  <div class="bg-light w-100 p-3"> 
-    <div class="border bg-white w-100 mt-2 py-2 px-3 ">
+  <div class="bg-light w-100 p-3">
+    <div class="border bg-white w-100 mt-2 py-2 px-3">
       <h4 class="m-2"><span class="bi bi-people"></span> Friends List</h4>
       <div class="border-bottom w-100 h-0 mb-2"></div>
-      <div class="d-flex flex-column align-items-center w-100 mh-100 overflow-auto" id="lg-friend-div"> 
+      <div
+        class="d-flex flex-column align-items-center w-100 mh-100 overflow-auto"
+        id="lg-friend-div"
+      >
         <RouterLink
           class="btn btn-outline-primary d-flex justify-content-center w-75 my-1"
-          v-for="(f, index) of user.friends"
+          v-for="f of user.friends"
           :to="{ name: 'profile', params: { id: f } }"
           :key="`user${user.id}-friend${f}`"
         >
